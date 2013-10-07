@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://java4cpp.loicoudot.github.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/mappings.xsd">
+	<classes>
+		<class class="java.lang.Class" exportAll="false"/>
+		<class class="java.lang.Throwable" exportAll="false">
+			<methods>
+				<wrappes>
+					<wrappe>toString()</wrappe>
+				</wrappes>
+			</methods>
+		</class>
+	</classes>
+	<keywords>
+		<keyword>delete</keyword>
+		<keyword>register</keyword>
+		<keyword>namespace</keyword>
+		<keyword>true</keyword>
+		<keyword>false</keyword>
+	</keywords>
+</mappings>

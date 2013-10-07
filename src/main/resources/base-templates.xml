@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/templates.xsd">
+	<sourceTemplates>
+		<sourceTemplate>enum-template.ftl</sourceTemplate>
+		<sourceTemplate>header-template.ftl</sourceTemplate>
+		<sourceTemplate>source-template.ftl</sourceTemplate>
+	</sourceTemplates>
+	<globalTemplates>
+		<globalTemplate>include-template.ftl</globalTemplate>
+		<globalTemplate>exception-template.ftl</globalTemplate>
+	</globalTemplates>
+	<datatypes>
+		<fallback>
+			<cppType>const ${cppFullName}&amp;</cppType>
+			<cppReturnType>${cppFullName}</cppReturnType>
+			<dependencies>${addDependency(javaName)}</dependencies>
+			<functions>
+				<function name="java2cpp">${cppFullName} ${functions.arg1} = ${cppFullName}(${functions.arg2});
+				javaEnv->DeleteLocalRef(${functions.arg2});
+				</function>
+				<function name="cpp2java">${jniSignature} ${functions.arg1} = ${functions.arg2}.getJavaObject();
+				</function>
+			</functions>
+		</fallback>
+		<array>
+			<cppType>jobjectArray</cppType>
+			<functions>
+				<function name="java2cpp">jobjectArray ${functions.arg1};</function>
+				<function name="cpp2java">${jniSignature} ${functions.arg1};</function>
+			</functions>
+		</array>
+		<enum>
+			<cppType>long</cppType>
+			<dependencies>${addDependency(javaName)}</dependencies>
+			<functions>
+				<function name="java2cpp">long ${functions.arg1};</function>
+				<function name="cpp2java">${jniSignature} ${functions.arg1};</function>
+			</functions>
+		</enum>
+		<templates>
+			<template class="void">
+				<cppType>void</cppType>
+			</template>
+			<template class="boolean">
+				<cppType>bool</cppType>
+				<functions>
+					<function name="java2cpp">bool ${functions.arg1} = (bool)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="byte">
+				<cppType>signed char</cppType>
+				<functions>
+					<function name="java2cpp">signed char ${functions.arg1} = (signed char)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="char">
+				<cppType>char</cppType>
+				<functions>
+					<function name="java2cpp">char ${functions.arg1} = (char)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="double">
+				<cppType>double</cppType>
+				<functions>
+					<function name="java2cpp">double ${functions.arg1} = (double)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="float">
+				<cppType>float</cppType>
+				<functions>
+					<function name="java2cpp">float ${functions.arg1} = (float)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="int">
+				<cppType>int</cppType>
+				<functions>
+					<function name="java2cpp">int ${functions.arg1} = (int)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="long">
+				<cppType>long</cppType>
+				<functions>
+					<function name="java2cpp">long long ${functions.arg1} = (long long)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+			<template class="short">
+				<cppType>short</cppType>
+				<functions>
+					<function name="java2cpp">short ${functions.arg1} = (short)${functions.arg2};</function>
+					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+				</functions>
+			</template>
+		</templates>
+	</datatypes>
+	<copyFiles>
+		<copyFile>java4cpp_runtime.h</copyFile>
+		<copyFile>java4cpp_runtime.cpp</copyFile>
+		<copyFile>java_exceptions.h</copyFile>
+		<copyFile>java4cpp_defs.h</copyFile>
+	</copyFiles>
+</templates>

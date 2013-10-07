@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	<groupId>com.github.loicoudot.java4cpp</groupId>
+	<artifactId>java4cpp-templates</artifactId>
+	<name>java4cpp-templates</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>Common mappings and templates for java4cpp project</description>
+	<url>https://github.com/loicoudot/java4cpp-templates</url>
+	<licenses>
+		<license>
+			<name>Gnu General Puplic License, Version 2.0</name>
+			<url>https://github.com/loicoudot/java4cpp-templates/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>https://github.com/loicoudot/java4cpp-templates</url>
+		<connection>scm:git:https://github.com/loicoudot/java4cpp-templates.git</connection>
+		<developerConnection>scm:git:https://github.com/loicoudot/java4cpp-templates.git</developerConnection>
+	</scm>
+	<developers>
+		<developer>
+			<id>loicoudot</id>
+			<name>Loic Oudot</name>
+			<email>loic.oudot@gmail.com</email>
+		</developer>
+	</developers>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<issueManagement>
+		<url>https://github.com/loicoudot/java4cpp-templates/issues</url>
+		<system>GitHub</system>
+	</issueManagement>
+</project>
