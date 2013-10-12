@@ -92,9 +92,9 @@ public:
 	<#list constructorList?keys?sort as constructor>
 	explicit ${class.cppShortName}(${constructor});
 	</#list>
-	explicit ${class.cppShortName}(jobject obj)<#if class.isThrowable> throw()</#if>;
-	${class.cppShortName}(const ${class.cppFullName}& other)<#if class.isThrowable> throw()</#if>;
-	${class.cppFullName}& operator=(const ${class.cppFullName}& other)<#if class.isThrowable> throw()</#if>;
+	explicit ${class.cppShortName}(jobject obj);
+	${class.cppShortName}(const ${class.cppFullName}& other);
+	${class.cppFullName}& operator=(const ${class.cppFullName}& other);
 	virtual ~${class.cppShortName}()<#if class.isThrowable> throw()</#if>;
 	<#if class.isThrowable>virtual const char* what() const throw();</#if>
 	<#if class.isCloneable>${class.cppReturnType} clone();</#if>

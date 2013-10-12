@@ -1,7 +1,7 @@
 <#include "common.ftl"/>
 <@cppFormatter>
 <#assign fileName><@fileName class/>.cpp</#assign>
-<@initIncludes ['"'+class.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"javawrapper.h"']/>
+<@initIncludes ['"'+class.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"javawrapper.h"', '<stdexcept>']/>
 <#list class.dependencies as dependency>
 <#if dependency.owner != class>
 <@addInclude '"'+dependency.owner.cppFullName?replace('::', '_')+'.h"'/>
@@ -35,25 +35,30 @@ void ${class.cppFullName}::setJavaObject(jobject obj)
 	if(_obj == obj) return;
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	if( _obj != NULL && javaEnv ) javaEnv->DeleteGlobalRef(_obj);
-   if(  obj != NULL && javaEnv ) _obj = javaEnv->NewGlobalRef(obj);
-   else _obj = NULL;
-   <#if class.superclass??>${class.superclass.cppFullName}::setJavaObject(obj);</#if>
-   <#list class.interfaces?sort_by("cppFullName") as interface>${interface.cppFullName}::setJavaObject(obj);</#list>
+   	if(  obj != NULL && javaEnv ) {
+   		jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+		if(javaEnv->IsInstanceOf(obj, cls) == JNI_FALSE) 
+			throw std::runtime_error("can't cast to \"${class.javaName}\"");
+   		_obj = javaEnv->NewGlobalRef(obj);
+   	}
+   	else _obj = NULL;
+   	<#if class.superclass??>${class.superclass.cppFullName}::setJavaObject(obj);</#if>
+   	<#list class.interfaces?sort_by("cppFullName") as interface>${interface.cppFullName}::setJavaObject(obj);</#list>
 }
 
-${class.cppFullName}::${class.cppShortName}(jobject obj)<#if class.isThrowable> throw()</#if><@headerDefinition class "obj"/>
+${class.cppFullName}::${class.cppShortName}(jobject obj)<@headerDefinition class "obj"/>
 {
 	_obj = NULL;
 	setJavaObject(obj);
 }
 
-${class.cppFullName}::${class.cppShortName}(const ${class.cppFullName}& other)<#if class.isThrowable> throw()</#if><@headerDefinition class "other"/>
+${class.cppFullName}::${class.cppShortName}(const ${class.cppFullName}& other)<@headerDefinition class "other"/>
 {
 	_obj = NULL;
 	setJavaObject(other._obj);
 }
 
-${class.cppFullName}& ${class.cppFullName}::operator=(const ${class.cppFullName}& other)<#if class.isThrowable> throw()</#if>
+${class.cppFullName}& ${class.cppFullName}::operator=(const ${class.cppFullName}& other)
 {
 	_obj = other._obj;
     return *this;
