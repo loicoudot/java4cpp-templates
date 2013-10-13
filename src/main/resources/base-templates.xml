@@ -25,10 +25,10 @@
 			</functions>
 		</fallback>
 		<array>
-			<cppType>jobjectArray</cppType>
+			<cppType>${jniSignature}</cppType>
 			<functions>
-				<function name="java2cpp">jobjectArray ${functions.arg1};</function>
-				<function name="cpp2java">${jniSignature} ${functions.arg1};</function>
+				<function name="java2cpp">${jniSignature} ${functions.arg1} = ${functions.arg2};</function>
+				<function name="cpp2java">${jniSignature} ${functions.arg1} = ${functions.arg2};</function>
 			</functions>
 		</array>
 		<enum>
@@ -96,7 +96,7 @@
 				</functions>
 			</template>
 			<template class="long">
-				<cppType>long</cppType>
+				<cppType>long long</cppType>
 				<functions>
 					<function name="java2cpp">long long ${functions.arg1} = (long long)${functions.arg2};</function>
 					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
