@@ -46,6 +46,25 @@ void ${class.cppFullName}::setJavaObject(jobject obj)
    	<#list class.interfaces?sort_by("cppFullName") as interface>${interface.cppFullName}::setJavaObject(obj);</#list>
 }
 
+<#if class.isEnum>
+${class.cppFullName}::${class.cppShortName}(${class.cppType} arg1)
+{
+	_obj = NULL;
+   if( arg1 != ${class.cppFullName}<#if !class.isInnerClass>Enum</#if>::NULL_VALUE )
+   {
+	   JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
+      jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+      jmethodID mid = Java4CppRuntime::getStaticMethodID(javaEnv, cls, "valueOf", "(Ljava/lang/String;)${class.javaSignature}");
+      jstring jarg1 = javaEnv->NewStringUTF(getEnumString(arg1));
+      jobject jresult = javaEnv->CallStaticObjectMethod(cls, mid, jarg1);
+      Java4CppRuntime::handleJavaException(javaEnv);
+      setJavaObject(jresult);
+      javaEnv->DeleteLocalRef(jresult);
+      javaEnv->DeleteLocalRef(jarg1);
+   }
+}
+</#if>
+
 ${class.cppFullName}::${class.cppShortName}(jobject obj)<@headerDefinition class "obj"/>
 {
 	_obj = NULL;
@@ -168,33 +187,18 @@ ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
 
 </#list>
 <#if class.isEnum>
-${class.cppFullName} ${class.cppFullName}::get(${class.cppType} arg1)
+const char* ${class.cppFullName}::getEnumString(${class.cppType} arg1)
 {
-   static std::map<${class.cppType}, ${class.cppFullName}> cache;
-   JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-   std::map<${class.cppType}, ${class.cppShortName}>::iterator itFind = cache.find(arg1);
-   if( itFind != cache.end() ) return itFind->second;
-   jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
-   jmethodID mid = Java4CppRuntime::getStaticMethodID(javaEnv, cls, "values", "()[${class.javaSignature}");
-   jobjectArray jresult = (jobjectArray)javaEnv->CallStaticObjectMethod(cls, mid);
-   Java4CppRuntime::handleJavaException(javaEnv);
-   ${class.cppFullName} result = ${class.cppFullName}(jresult);
-   cache.insert(std::make_pair(arg1, result));
-   javaEnv->DeleteLocalRef(jresult);
-   return result;
-}
-/*
-std::string ${class.cppFullName}::getEnumString(${class.cppType} arg1)
-{
-   static std::map<long, std::string> map;
+   static std::map<long, const char*> map;
    if( !map.size() )
    {
+   	  map[-1] = "NULL_VALUE";
       <#list class.enumKeys as key>
       map[${key_index}] = "${key}";
       </#list>
    }
    return map[(long)arg1];
 }
-*/
+
 </#if>
 </#macro>

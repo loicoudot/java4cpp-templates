@@ -15,10 +15,6 @@ class _JAVA4CPPCLASS Java4CppRuntime {
     static jstring newStringNative(JNIEnv *javaEnv, const std::string& str);
     static std::string getStringNativeChars(JNIEnv *javaEnv, jstring jstr);
 
-    // Gestion de la conversion des enum
-    static jobject newEnum(JNIEnv *javaEnv, const char* value, const char* enumType);
-    static int nativeEnum(JNIEnv *javaEnv, jobject enume, const char* enumType);
-
     static jclass getClass(JNIEnv *javaEnv, const char* cls);
     static jmethodID getMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);
     static jmethodID getStaticMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);

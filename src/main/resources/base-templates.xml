@@ -32,11 +32,21 @@
 			</functions>
 		</array>
 		<enum>
-			<cppType>long</cppType>
+			<cppType>${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum</cppType>
 			<dependencies>${addDependency(javaName)}</dependencies>
 			<functions>
-				<function name="java2cpp">long ${functions.arg1};</function>
-				<function name="cpp2java">${jniSignature} ${functions.arg1};</function>
+				<function name="java2cpp">jclass enumcls = Java4CppRuntime::getClass(javaEnv, "${javaName?replace('.', '/')}");
+				jmethodID ordinal = Java4CppRuntime::getMethodID(javaEnv, enumcls, "ordinal", "()I");
+				${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum ${functions.arg1} = (${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum)javaEnv->CallIntMethod(${functions.arg2}, ordinal);
+				</function>
+				<function name="cpp2java">jclass ${functions.arg1}cls = Java4CppRuntime::getClass(javaEnv, "${javaName?replace('.', '/')}");
+				jmethodID ${functions.arg1}values = Java4CppRuntime::getStaticMethodID(javaEnv, ${functions.arg1}cls, "values", "()[${javaSignature}");
+      			jobjectArray ${functions.arg1}array = (jobjectArray)javaEnv->CallStaticObjectMethod(${functions.arg1}cls, ${functions.arg1}values);
+      			jobject ${functions.arg1} = javaEnv->GetObjectArrayElement(${functions.arg1}array, (jsize)${functions.arg2});
+				</function>
+				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg2});
+				javaEnv->DeleteLocalRef(${functions.arg2}array);
+				</function>
 			</functions>
 		</enum>
 		<templates>

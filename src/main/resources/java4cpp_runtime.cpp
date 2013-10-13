@@ -200,19 +200,3 @@ std::string Java4CppRuntime::getStringNativeChars(JNIEnv *javaEnv, jstring jstr)
    }
    return str;
 }
-
-jobject Java4CppRuntime::newEnum(JNIEnv *javaEnv, const char* value, const char* enumType)
-{
-   jclass cls = Java4CppRuntime::getClass(javaEnv, enumType);
-   jfieldID fid = javaEnv->GetStaticFieldID(cls, value, enumType);
-   return javaEnv->GetStaticObjectField(cls, fid);
-}
-
-int Java4CppRuntime::nativeEnum(JNIEnv *javaEnv, jobject enume, const char* enumType)
-{
-   if( !enume ) return 0;
-   jclass cls = Java4CppRuntime::getClass(javaEnv, enumType);
-   jmethodID mid = Java4CppRuntime::getMethodID(javaEnv, cls, "ordinal", "()I");
-   jint jresult = javaEnv->CallIntMethod(enume, mid);
-   return (int)jresult;
-}

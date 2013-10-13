@@ -12,6 +12,7 @@
 </#list>namespace ${cppEnum} {
 
 typedef enum {
+NULL_VALUE = -1,
 <#list class.enumKeys as key>
 ${key}<#if key_has_next>,</#if>
 </#list>

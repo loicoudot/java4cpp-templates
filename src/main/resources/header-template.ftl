@@ -68,6 +68,16 @@ class _JAVA4CPPCLASS ${class.cppShortName}<#assign separator=": public"/>
 <#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}<#assign separator=", public"/></#list><#t>
 {
 public:
+	<#-- Inner enumerations are declared inside -->
+	<#if class.isInnerClass && class.isEnum>
+	typedef enum {
+		NULL_VALUE = -1,
+		<#list class.enumKeys as key>
+		${key}<#if key_has_next>,</#if>
+		</#list>
+	} ${class.cppShortName}Enum;
+   
+	</#if>
 	<#-- Generate nested enumarations -->
 	<#list class.nestedClass?sort_by("cppFullName") as nestedClass>
 	<#if nestedClass.isEnum><@classDefinition nestedClass/>
@@ -93,30 +103,21 @@ public:
 	explicit ${class.cppShortName}(${constructor});
 	</#list>
 	explicit ${class.cppShortName}(jobject obj);
+	<#if class.isEnum>explicit ${class.cppShortName}(${class.cppType} arg1);</#if>
 	${class.cppShortName}(const ${class.cppFullName}& other);
 	${class.cppFullName}& operator=(const ${class.cppFullName}& other);
 	virtual ~${class.cppShortName}()<#if class.isThrowable> throw()</#if>;
 	<#if class.isThrowable>virtual const char* what() const throw();</#if>
 	<#if class.isCloneable>${class.cppReturnType} clone();</#if>
 public:
-	<#-- Inner enumerations are declared inside -->
-	<#if class.isInnerClass && class.isEnum>
-	typedef enum {
-		<#list class.enumKeys as key>
-		${key}<#if key_has_next>,</#if>
-		</#list>
-	} ${class.cppShortName}Enum;
-   
-	</#if>
 	<#-- Generate methods -->
 	<@sortMethods/>
 	<#list methodList?keys?sort as method>
 	<#if methodList[method].isStatic>static<#else>virtual</#if> ${methodList[method].returnType.cppReturnType} ${method};
 	</#list>
 	<#-- Generate enumerations helpers -->
-	<#if class.isEnum><@addInclude '<map>'/>
-	${class.cppFullName} get(${class.cppType} arg1);
-	//static std::string getEnumString(${class.cppType} arg1);
+	<#if class.isEnum>
+	static const char* getEnumString(${class.cppType} arg1);
 	</#if>
 private:
 	jobject _obj;
