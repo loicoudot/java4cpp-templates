@@ -13,8 +13,10 @@ void convertJThrowableToException( JNIEnv *javaEnv, jthrowable exc)
    jclass cls = Java4CppRuntime::getClass(javaEnv, "java/lang/Class");
    jclass exceptionClass = javaEnv->GetObjectClass(exc);
    jmethodID mid = Java4CppRuntime::getMethodID(javaEnv, cls, "getName", "()Ljava/lang/String;");
-   jobject jresult = javaEnv->CallObjectMethod(exceptionClass, mid);
-   std::string className = Java4CppRuntime::getStringNativeChars(javaEnv, (jstring)jresult);
+   jstring jresult = (jstring)javaEnv->CallObjectMethod(exceptionClass, mid);
+   const char *str = javaEnv->GetStringUTFChars(jresult, 0);
+   std::string className(str);
+   javaEnv->ReleaseStringUTFChars(jresult, str);
    Java4CppRuntime::handleJavaException(javaEnv);
    <#list classes?sort_by('cppFullName') as class>
    <#if class.isThrowable>
