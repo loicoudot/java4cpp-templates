@@ -18,8 +18,8 @@
 <#macro sortConstructors><#assign constructorList = {}>
 <#list class.constructors as constructor>
 <#assign cppSignature><@parameters constructor.parameters/></#assign>
-<#if cppSignature == "const "+class.cppFullName+"& arg1" || constructorList[constructor]??>// Skipping duplicate constructor: ${cppSignature}<#else>
-<#assign constructorList = constructorList + {cppSignature:constructor}/></#if>
+<#if cppSignature == "const "+class.cppFullName+"& arg1" || constructorList[constructor]??>// Skipping duplicate constructor: ${cppSignature}
+<#else><#assign constructorList = constructorList + {cppSignature:constructor}/></#if>
 </#list>
 </#macro>
 
@@ -27,7 +27,6 @@
 <#list class.methods as method>
 <#assign cppSignature>${method.cppName}(<@parameters method.parameters/>)</#assign>
 <#if methodList[cppSignature]??>// Skipping duplicate method: ${cppSignature}
-<#else>
-<#assign methodList = methodList + {cppSignature:method}></#if>
+<#else><#assign methodList = methodList + {cppSignature:method}></#if>
 </#list>
 </#macro>

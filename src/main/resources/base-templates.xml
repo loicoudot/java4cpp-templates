@@ -25,10 +25,39 @@
 			</functions>
 		</fallback>
 		<array>
-			<cppType>${jniSignature}</cppType>
+			<cppType>const std::vector&lt;${innerType.cppReturnType}&gt;&amp;</cppType>
+			<cppReturnType>std::vector&lt;${innerType.cppReturnType}&gt;</cppReturnType>
+			<dependencies>${addInclude("&lt;vector&gt;")}</dependencies>
 			<functions>
-				<function name="java2cpp">${jniSignature} ${functions.arg1} = ${functions.arg2};</function>
-				<function name="cpp2java">${jniSignature} ${functions.arg1} = ${functions.arg2};</function>
+				<function name="java2cpp">&lt;#if innerType.jniMethodName == "Object"&gt;
+				std::vector&lt;${innerType.cppReturnType}&gt; ${functions.arg1};
+				jsize ${functions.arg1}size = javaEnv->GetArrayLength(${functions.arg2});
+				for(int i = 0; i &lt; ${functions.arg1}size; ++i) {
+				jobject ${functions.arg1}elem = javaEnv->GetObjectArrayElement(${functions.arg2}, i);
+				${innerType.functions.java2cpp("tmp", "${functions.arg1}elem")}
+				${functions.arg1}.push_back(tmp);
+				javaEnv->DeleteLocalRef(${functions.arg1}elem);
+				}
+				&lt;#else&gt;
+				${innerType.cppReturnType}* ${functions.arg1}values = (${innerType.cppReturnType}*)javaEnv->Get${innerType.jniMethodName}ArrayElements(${functions.arg2}, NULL);
+				std::vector&lt;${innerType.cppReturnType}&gt; ${functions.arg1}(${functions.arg1}values, ${functions.arg1}values+javaEnv->GetArrayLength(${functions.arg2}));
+				javaEnv->Release${innerType.jniMethodName}ArrayElements(${functions.arg2}, (${innerType.jniSignature}*)${functions.arg1}values, JNI_ABORT);
+				&lt;/#if&gt;
+				</function>
+				<function name="cpp2java">&lt;#if innerType.jniMethodName == "Object"&gt;
+				jclass ${functions.arg1}cls = Java4CppRuntime::getClass(javaEnv, "${innerType.javaName?replace('.', '/')}");
+				jobjectArray ${functions.arg1} = javaEnv->NewObjectArray(${functions.arg2}.size(), ${functions.arg1}cls, NULL);
+				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
+					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
+					javaEnv->SetObjectArrayElement(${functions.arg1}, ${functions.arg1}idx, ${functions.arg1}elem);
+				}
+				&lt;#else&gt;
+				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array(${functions.arg2}.size());
+				javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, 0, ${functions.arg2}.size(), (${innerType.jniSignature}*)&amp;${functions.arg2}[0]);
+				&lt;/#if&gt;
+				</function>
+				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg2});
+				</function>
 			</functions>
 		</array>
 		<enum>
