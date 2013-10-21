@@ -103,7 +103,7 @@ ${class.cppFullName}::${class.cppShortName}(${cppSignature})<@headerDefinition c
 	Java4CppRuntime::handleJavaException(javaEnv);
 	setJavaObject(o);
 	javaEnv->DeleteLocalRef(o);
-	<#list constructor.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("arg"+(parameter_index+1), "jarg"+(parameter_index+1))}</#if></#list>
+	<#list constructor.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("jarg"+(parameter_index+1))}</#if></#list>
 }
 
 </#list>
@@ -180,7 +180,7 @@ ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
 	javaEnv->Call${method.returnType.jniMethodName}Method(_obj, mid</#if><#t>
 	<#list method.parameters as parameter>, jarg${parameter_index+1}<#lt></#list>);
    Java4CppRuntime::handleJavaException(javaEnv); 
-	<#list method.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("arg"+(parameter_index+1), "jarg"+(parameter_index+1))}</#if></#list>
+	<#list method.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("jarg"+(parameter_index+1))}</#if></#list>
 	<#if method.returnType.cppReturnType!="void">${method.returnType.functions.java2cpp("result", "jresult")}
 	return result;</#if> 
 }
