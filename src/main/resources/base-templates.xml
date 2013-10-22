@@ -27,21 +27,21 @@
 		<array>
 			<cppType>const std::vector&lt;${innerType.cppReturnType} &gt;&amp;</cppType>
 			<cppReturnType>std::vector&lt;${innerType.cppReturnType} &gt;</cppReturnType>
-			<dependencies>${addInclude("&lt;vector&gt;")}${addDependency(innerType)}</dependencies>
+			<dependencies>${addInclude("&lt;vector&gt;")}&lt;#assign current = innerType&gt;&lt;#list 1..20 as x&gt;&lt;#if current.isPrimitive&gt;&lt;#break/&gt;&lt;#elseif !current.isArray&gt;${addDependency(current)}&lt;/#if&gt;&lt;#if !current.innerType??&gt;&lt;#break/&gt;&lt;/#if&gt;&lt;#assign current = current.innerType&gt;&lt;/#list&gt;</dependencies>
 			<functions>
 				<function name="java2cpp">&lt;#if innerType.jniMethodName == "Object"&gt;
 				std::vector&lt;${innerType.cppReturnType} &gt; ${functions.arg1};
-				jsize ${functions.arg1}size = javaEnv->GetArrayLength(${functions.arg2});
+				jsize ${functions.arg1}size = javaEnv->GetArrayLength((jobjectArray)${functions.arg2});
 				for(int i = 0; i &lt; ${functions.arg1}size; ++i) {
-				jobject ${functions.arg1}elem = javaEnv->GetObjectArrayElement(${functions.arg2}, i);
-				${innerType.functions.java2cpp("tmp", "${functions.arg1}elem")}
-				${functions.arg1}.push_back(tmp);
+				jobject ${functions.arg1}elem = javaEnv->GetObjectArrayElement((jobjectArray)${functions.arg2}, i);
+				${innerType.functions.java2cpp("${functions.arg1}tmp", "${functions.arg1}elem")}
+				${functions.arg1}.push_back(${functions.arg1}tmp);
 				javaEnv->DeleteLocalRef(${functions.arg1}elem);
 				}
 				&lt;#else&gt;
-				${innerType.cppReturnType}* ${functions.arg1}values = (${innerType.cppReturnType}*)javaEnv->Get${innerType.jniMethodName}ArrayElements(${functions.arg2}, NULL);
-				std::vector&lt;${innerType.cppReturnType} &gt; ${functions.arg1}(${functions.arg1}values, ${functions.arg1}values+javaEnv->GetArrayLength(${functions.arg2}));
-				javaEnv->Release${innerType.jniMethodName}ArrayElements(${functions.arg2}, (${innerType.jniSignature}*)${functions.arg1}values, JNI_ABORT);
+				${innerType.cppReturnType}* ${functions.arg1}values = (${innerType.cppReturnType}*)javaEnv->Get${innerType.jniMethodName}ArrayElements((${jniSignature})${functions.arg2}, NULL);
+				std::vector&lt;${innerType.cppReturnType} &gt; ${functions.arg1}(${functions.arg1}values, ${functions.arg1}values+javaEnv->GetArrayLength((${jniSignature})${functions.arg2}));
+				javaEnv->Release${innerType.jniMethodName}ArrayElements((${jniSignature})${functions.arg2}, (${innerType.jniSignature}*)${functions.arg1}values, JNI_ABORT);
 				&lt;/#if&gt;
 				</function>
 				<function name="cpp2java">&lt;#if innerType.jniMethodName == "Object"&gt;
@@ -50,7 +50,7 @@
 				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
 					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
 					javaEnv->SetObjectArrayElement(${functions.arg1}, ${functions.arg1}idx, ${functions.arg1}elem);
-					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")};&lt;/#if&gt;
+					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")}&lt;/#if&gt;
 				}
 				&lt;#elseif innerType.jniMethodName == "Boolean"&gt;
 				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array(${functions.arg2}.size());
@@ -82,7 +82,7 @@
       			jobject ${functions.arg1} = javaEnv->GetObjectArrayElement(${functions.arg1}array, (jsize)${functions.arg2});
 				</function>
 				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});
-				javaEnv->DeleteLocalRef(${functions.arg2}array);
+				javaEnv->DeleteLocalRef(${functions.arg1}array);
 				</function>
 			</functions>
 		</enum>
