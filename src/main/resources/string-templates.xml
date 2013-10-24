@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/templates.xsd">
+	<datatypes>
+		<templates>
+			<template class="java.lang.String">
+				<cppType>const std::string&amp;</cppType>
+				<cppReturnType>std::string</cppReturnType>
+				<dependencies>${addInclude("&lt;string&gt;")}</dependencies>
+				<functions>
+					<function name="java2cpp">const char* ${functions.arg1}utf = javaEnv->GetStringUTFChars((jstring)${functions.arg2}, NULL); 
+					std::string ${functions.arg1}(${functions.arg1}utf);
+					javaEnv->ReleaseStringUTFChars((jstring)${functions.arg2}, ${functions.arg1}utf);</function>
+					<function name="cpp2java">jstring ${functions.arg1} = javaEnv->NewStringUTF(${functions.arg2}.c_str());</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});</function>
+				</functions>
+			</template>
+		</templates>
+	</datatypes>
+</templates>
