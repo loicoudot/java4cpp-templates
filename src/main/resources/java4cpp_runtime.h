@@ -1,10 +1,9 @@
 #ifndef JAVA4CPP_RUNTIME_H
 #define JAVA4CPP_RUNTIME_H
 
-#include "java4cpp_defs.h"
 #include "jni.h"
 
-class _JAVA4CPPCLASS Java4CppRuntime {
+class Java4CppRuntime {
   public:
     static JNIEnv *attachCurrentThread();
     static void handleJavaException(JNIEnv *javaEnv);

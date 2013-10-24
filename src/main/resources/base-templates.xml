@@ -152,6 +152,7 @@
 		<copyFile>java4cpp_runtime.h</copyFile>
 		<copyFile>java4cpp_runtime.cpp</copyFile>
 		<copyFile>java_exceptions.h</copyFile>
-		<copyFile>java4cpp_defs.h</copyFile>
+		<copyFile>jvm_launcher.h</copyFile>
+		<copyFile>jvm_launcher.cpp</copyFile>
 	</copyFiles>
 </templates>

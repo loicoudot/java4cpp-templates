@@ -7,7 +7,7 @@
 #define ${fileName?replace('.', '_')?upper_case}
 
 <#-- Adds includes from the runtime and Java4Cpp -->
-<@initIncludes ['"java4cpp_defs.h"', '"jni.h"']/>
+<@initIncludes ['"jni.h"']/>
 <#if class.isThrowable><@addIncludes ['<stdexcept>', '<string>']/></#if>
 <@addIncludes class.includes/>
 <#-- Enumerations need to include theirs values -->
@@ -62,7 +62,7 @@
 
 <#-- Macro for generating class definition (need recursivity)-->
 <#macro classDefinition class>
-class _JAVA4CPPCLASS ${class.cppShortName}<#assign separator=": public"/>
+class ${class.cppShortName}<#assign separator=": public"/>
 <#if class.superclass??>${separator} ${class.superclass.cppFullName}<#assign separator=", public"/><#t>
 <#else><#if class.isThrowable>${separator} std::exception<#assign separator=", public"/></#if></#if><#t>
 <#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}<#assign separator=", public"/></#list><#t>

@@ -1,7 +1,7 @@
 <#include "common.ftl"/>
 <@cppFormatter>
 <#assign fileName><@fileName class/>.cpp</#assign>
-<@initIncludes ['"'+class.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"javawrapper.h"', '<stdexcept>']/>
+<@initIncludes ['"'+class.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"jvm_launcher.h"', '<stdexcept>']/>
 <#list class.dependencies as dependency>
 <#if dependency.owner != class>
 <@addInclude '"'+dependency.owner.cppFullName?replace('::', '_')+'.h"'/>

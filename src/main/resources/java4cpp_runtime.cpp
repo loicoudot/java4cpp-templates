@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <map>
+#include <string>
 #include "jni.h"
+#include "jvm_launcher.h"
 #include "java4cpp_runtime.h"
-#include "javawrapper.h"
 #include "java_exceptions.h"
 
 // classes cache TODO: move to templates
