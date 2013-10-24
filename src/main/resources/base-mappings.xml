@@ -3,13 +3,7 @@
   xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/mappings.xsd">
 	<classes>
 		<class class="java.lang.Class" exportAll="false"/>
-		<class class="java.lang.Throwable" exportAll="false">
-			<methods>
-				<wrappes>
-					<wrappe>toString()</wrappe>
-				</wrappes>
-			</methods>
-		</class>
+		<class class="java.lang.Throwable" exportAll="false"/>
 	</classes>
 	<keywords>
 		<keyword>delete</keyword>
