@@ -5,6 +5,7 @@
 	<datatypes>
 		<templates>
 			<template class="java.lang.String">
+				<needAnalyzing>false</needAnalyzing>
 				<cppType>const std::string&amp;</cppType>
 				<cppReturnType>std::string</cppReturnType>
 				<dependencies>${addInclude("&lt;string&gt;")}</dependencies>
