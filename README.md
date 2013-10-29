@@ -31,15 +31,17 @@ Once java4cpp generate the proxies, il also adds some files for the runtime exec
 The most usefull file is `jvm-launcher.h` that lets you define the path 
 of your installed JRE/JDK, and add some parameters to the JVM like the classpath for exemple.
 
-		#include "java4cpp/jvm_launcher.h"
-		#include "java4cpp/java_classes.h"
-		
-		int main(void)
-		{
-			// Launch a JVM in the current process
-			jw_setJrePath("/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib/server/libjvm.dylib");
-			jw_addClassPath("../jars/java4cpp-sample-1.0.0.jar");
-			// Create a java.lang.Double instance in the JVM and return a C++ proxy 
-			java::util::Double proxy(12.0);
-		}
+```cpp
+#include "java4cpp/jvm_launcher.h"
+#include "java4cpp/java_classes.h"
+
+int main(void)
+{
+	// Launch a JVM in the current process
+	jw_setJrePath("/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/jre/lib/server/libjvm.dylib");
+	jw_addClassPath("../jars/java4cpp-sample-1.0.0.jar");
+	// Create a java.lang.Double instance in the JVM and return a C++ proxy 
+	java::util::Double proxy(12.0);
+}
+```
  
