@@ -46,22 +46,22 @@
 				</function>
 				<function name="cpp2java">&lt;#if innerType.jniMethodName == "Object"&gt;
 				jclass ${functions.arg1}cls = Java4CppRuntime::getClass(javaEnv, "${innerType.javaName?replace('.', '/')}");
-				jobjectArray ${functions.arg1} = javaEnv->NewObjectArray(${functions.arg2}.size(), ${functions.arg1}cls, NULL);
+				jobjectArray ${functions.arg1} = javaEnv->NewObjectArray((jsize)${functions.arg2}.size(), ${functions.arg1}cls, NULL);
 				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
 					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
 					javaEnv->SetObjectArrayElement(${functions.arg1}, ${functions.arg1}idx, ${functions.arg1}elem);
 					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")}&lt;/#if&gt;
 				}
 				&lt;#elseif innerType.jniMethodName == "Boolean"&gt;
-				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array(${functions.arg2}.size());
+				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array((jsize)${functions.arg2}.size());
 				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
 					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
 					javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, ${functions.arg1}idx, 1, (${innerType.jniSignature}*)&amp;${functions.arg1}elem);
 					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")};&lt;/#if&gt;
 				}
 				&lt;#else&gt;
-				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array(${functions.arg2}.size());
-				javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, 0, ${functions.arg2}.size(), (${innerType.jniSignature}*)&amp;${functions.arg2}[0]);
+				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array((jsize)${functions.arg2}.size());
+				javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, 0, (jsize)${functions.arg2}.size(), (${innerType.jniSignature}*)&amp;${functions.arg2}[0]);
 				&lt;/#if&gt;
 				</function>
 				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});
