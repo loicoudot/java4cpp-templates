@@ -4,14 +4,21 @@
  *  Created on: 12 oct. 2013
  *      Author: Loic Oudot
  */
+#include "jvm_launcher.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
-#include <dlfcn.h>
+#include <algorithm>
 #include <stdexcept>
-
-#include "jvm_launcher.h"
+#ifdef WIN32
+#include <windows.h>
+#define LoadSym GetProcAddress
+#else
+#include <dlfcn.h>
+#define WINAPI
+#define LoadSym dlsym
+#endif
 
 #define CLASS_PATH "-Djava.class.path="
 
@@ -22,8 +29,8 @@ std::string _jrePath;
 JvmOptions _options;
 JvmOptions _classPath;
 
-typedef jint (*JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
-typedef jint (*JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
+typedef jint (WINAPI *JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
+typedef jint (WINAPI *JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
 
 
 void jw_setJrePath(const char* jrePath)
@@ -104,13 +111,17 @@ void initJVM()
       return;
 
    JNIEnv* pVMEnv = NULL;
-	void *handle = dlopen(_jrePath.c_str(), RTLD_NOW);
-	if( handle == NULL )
+#ifdef WIN32
+   HMODULE handle = LoadLibraryA(_jrePath.c_str());
+#else
+   void *handle = dlopen(_jrePath.c_str(), RTLD_NOW);
+#endif
+   	if( handle == NULL )
 		throw std::runtime_error("initJVM: unable to load libjvm.");
 
-	JNI_GetCreatedJavaVMs_t JNI_GetCreatedJavaVMs = (JNI_GetCreatedJavaVMs_t)dlsym(handle, "JNI_GetCreatedJavaVMs");
+	JNI_GetCreatedJavaVMs_t JNI_GetCreatedJavaVMs = (JNI_GetCreatedJavaVMs_t)LoadSym(handle, "JNI_GetCreatedJavaVMs");
 	if( JNI_GetCreatedJavaVMs == NULL )
-		JNI_GetCreatedJavaVMs = (JNI_GetCreatedJavaVMs_t)dlsym(handle, "JNI_GetCreatedJavaVMs_Impl");
+		JNI_GetCreatedJavaVMs = (JNI_GetCreatedJavaVMs_t)LoadSym(handle, "JNI_GetCreatedJavaVMs_Impl");
 	if( JNI_GetCreatedJavaVMs == NULL )
 		throw std::runtime_error("initJVM: unable to find method JNI_GetCreatedJavaVMs.");
 
@@ -121,9 +132,9 @@ void initJVM()
 	{
 		 // Else : create a new JVM
 		setClassPath();
-		long nbOptions = (long)_options.size();
+		jint nbOptions = (jint)_options.size();
 		JavaVMOption *aOptions = new JavaVMOption[nbOptions];
-		for( long i = 0; i < nbOptions; ++i )
+		for( jint i = 0; i < nbOptions; ++i )
 			aOptions[i].optionString = (char*)_options[i].c_str();
 
 		JavaVMInitArgs oVMArgs;
@@ -132,9 +143,9 @@ void initJVM()
 		oVMArgs.nOptions = nbOptions;
 		oVMArgs.options = aOptions;
 
-		JNI_CreateJavaVM_t JNI_CreateJavaVM = (JNI_CreateJavaVM_t)dlsym(handle, "JNI_CreateJavaVM");
+		JNI_CreateJavaVM_t JNI_CreateJavaVM = (JNI_CreateJavaVM_t)LoadSym(handle, "JNI_CreateJavaVM");
 		if( JNI_CreateJavaVM == NULL )
-			JNI_CreateJavaVM = (JNI_CreateJavaVM_t)dlsym(handle, "JNI_CreateJavaVM_Impl");
+			JNI_CreateJavaVM = (JNI_CreateJavaVM_t)LoadSym(handle, "JNI_CreateJavaVM_Impl");
 		if( JNI_CreateJavaVM == NULL )
 			throw std::runtime_error("initJVM: unable to find method JNI_CreateJavaVM.");
 
