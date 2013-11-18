@@ -120,6 +120,8 @@ public:
 	static const char* getEnumString(${class.cppType} arg1);
 	</#if>
 private:
+	static jclass j4c_getClass();
+	
 	jobject _obj;
 	<#if class.isThrowable>mutable std::string _msg;</#if>
 };

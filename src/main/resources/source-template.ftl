@@ -25,6 +25,20 @@
 <#list class.nestedClass as nestedClass>
 <@classImplementation nestedClass/>
 </#list>
+jclass ${class.cppFullName}::j4c_getClass() {
+	static jclass globalRefCls = NULL;
+	if( !globalRefCls ) {
+		JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
+	   	jclass localRefCls = javaEnv->FindClass("${class.javaName?replace('.', '/')}");
+		if( localRefCls == NULL )
+  			throw std::runtime_error("can't find class \"${class.javaName}\"");
+
+		globalRefCls = (jclass)javaEnv->NewGlobalRef(localRefCls);
+		javaEnv->DeleteLocalRef(localRefCls);
+	}
+	return globalRefCls;
+}
+
 jobject ${class.cppFullName}::getJavaObject() const
 {
 	return _obj;
@@ -36,7 +50,7 @@ void ${class.cppFullName}::setJavaObject(jobject obj)
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	if( _obj != NULL && javaEnv ) javaEnv->DeleteGlobalRef(_obj);
    	if(  obj != NULL && javaEnv ) {
-   		jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+   		jclass cls = j4c_getClass();
 		if(javaEnv->IsInstanceOf(obj, cls) == JNI_FALSE) 
 			throw std::runtime_error("can't cast to \"${class.javaName}\"");
    		_obj = javaEnv->NewGlobalRef(obj);
@@ -53,7 +67,7 @@ ${class.cppFullName}::${class.cppShortName}(${class.cppType} arg1)
    if( arg1 != ${class.cppFullName}<#if !class.isInnerClass>Enum</#if>::NULL_VALUE )
    {
 	   JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-      jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+      jclass cls = j4c_getClass();
       jmethodID mid = Java4CppRuntime::getStaticMethodID(javaEnv, cls, "valueOf", "(Ljava/lang/String;)${class.javaSignature}");
       jstring jarg1 = javaEnv->NewStringUTF(getEnumString(arg1));
       jobject jresult = javaEnv->CallStaticObjectMethod(cls, mid, jarg1);
@@ -96,7 +110,7 @@ ${class.cppFullName}::${class.cppShortName}(${cppSignature})<@headerDefinition c
 {
 	_obj = NULL;
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-	jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+	jclass cls = j4c_getClass();
 	jmethodID mid = Java4CppRuntime::getMethodID(javaEnv, cls, "<init>", "(<#list constructor.parameters as parameter>${parameter.javaSignature}</#list>)V");
 	<#list constructor.parameters as parameter>${parameter.functions.cpp2java("jarg"+(parameter_index+1), "arg"+(parameter_index+1))}</#list>
 	jobject o = javaEnv->NewObject(cls, mid<#list constructor.parameters as parameter>, jarg${parameter_index+1}</#list>);
@@ -144,7 +158,7 @@ ${class.cppFullName}::${class.cppShortName}(${cppSignature})<@headerDefinition c
 ${class.cppReturnType} ${class.cppFullName}::clone()
 {
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-	jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+	jclass cls = j4c_getClass();
 	jmethodID mid = Java4CppRuntime::getMethodID(javaEnv, cls, "clone", "()L${class.javaName?replace('.', '/')};");
 	jobject jresult = javaEnv->CallObjectMethod(_obj, mid);
 	Java4CppRuntime::handleJavaException(javaEnv);
@@ -157,7 +171,7 @@ ${class.cppReturnType} ${class.cppFullName}::clone()
 <#list class.fields?sort_by("cppName") as field>
 ${field.type.cppReturnType} ${class.cppFullName}::get${field.cppName?cap_first}() {
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-	jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+	jclass cls = j4c_getClass();
 	jfieldID fid = Java4CppRuntime::getStaticFieldID(javaEnv, cls, "${field.javaName}", "${field.type.javaSignature}");
    ${field.type.jniSignature} jvar = javaEnv->GetStatic${field.type.jniMethodName}Field(cls, fid);
    ${field.type.functions.java2cpp("jvar", "var")}
@@ -172,7 +186,7 @@ ${field.type.cppReturnType} ${class.cppFullName}::get${field.cppName?cap_first}(
 ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
 {
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
-	jclass cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+	jclass cls = j4c_getClass();
 	jmethodID mid = Java4CppRuntime::get<#if method.isStatic>Static</#if>MethodID(javaEnv, cls, "${method.javaName}", "(<#list method.parameters as parameter>${parameter.javaSignature}</#list>)${method.returnType.javaSignature}");
  	<#list method.parameters as parameter>${parameter.functions.cpp2java("jarg"+(parameter_index+1), "arg"+(parameter_index+1))}</#list>
 	<#if method.returnType.cppReturnType!="void">${method.returnType.jniSignature} jresult = (${method.returnType.jniSignature})</#if><#t>
