@@ -88,29 +88,3 @@ jmethodID Java4CppRuntime::getStaticMethodID(JNIEnv *javaEnv, jclass cls, const 
    signatures[std::string(name)+signature] = localRefMid;
    return localRefMid;
 }
-
-jfieldID Java4CppRuntime::getFieldID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature)
-{
-   SignatureFieldMap& signatures = fieldMap[cls];
-   SignatureFieldMap::iterator sgnIter = signatures.find(name);
-   if( sgnIter != signatures.end() )
-      return sgnIter->second;
-
-   jfieldID localRefFid = javaEnv->GetFieldID(cls, name, signature);
-
-   signatures[name] = localRefFid;
-   return localRefFid;
-}
-
-jfieldID Java4CppRuntime::getStaticFieldID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature)
-{
-   SignatureFieldMap& signatures = fieldMap[cls];
-   SignatureFieldMap::iterator sgnIter = signatures.find(name);
-   if( sgnIter != signatures.end() )
-      return sgnIter->second;
-
-   jfieldID localRefFid = javaEnv->GetStaticFieldID(cls, name, signature);
-
-   signatures[name] = localRefFid;
-   return localRefFid;
-}

@@ -11,8 +11,6 @@ class Java4CppRuntime {
     static jclass getClass(JNIEnv *javaEnv, const char* cls);
     static jmethodID getMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);
     static jmethodID getStaticMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);
-    static jfieldID getFieldID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);
-    static jfieldID getStaticFieldID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature);
 };
 
 #endif
