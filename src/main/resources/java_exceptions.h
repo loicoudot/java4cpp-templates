@@ -3,6 +3,6 @@
 
 #include "jni.h"
 
-void convertJThrowableToException( JNIEnv *javaEnv, jthrowable exc);
+void convertJThrowableToException(JNIEnv *javaEnv, jthrowable exc);
 
 #endif

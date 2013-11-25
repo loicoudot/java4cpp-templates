@@ -23,10 +23,10 @@ FieldMap fieldMap;
 
 JNIEnv *Java4CppRuntime::attachCurrentThread()
 {
-   if(getJVM())
+   if (getJVM())
    {
       JNIEnv *javaEnv;
-      getJVM()->AttachCurrentThread((void**)&javaEnv, NULL);
+      getJVM()->AttachCurrentThread((void**) &javaEnv, NULL);
       return javaEnv;
    }
    return NULL;
@@ -34,11 +34,11 @@ JNIEnv *Java4CppRuntime::attachCurrentThread()
 
 void Java4CppRuntime::handleJavaException(JNIEnv *javaEnv)
 {
-   if(!javaEnv)
+   if (!javaEnv)
       return;
 
    jthrowable exc = javaEnv->ExceptionOccurred();
-   if( exc )
+   if (exc)
    {
       javaEnv->ExceptionClear();
       convertJThrowableToException(javaEnv, exc);
@@ -49,14 +49,14 @@ jclass Java4CppRuntime::getClass(JNIEnv *javaEnv, const char* cls)
 {
    ClassMap::iterator clsIter = classMap.find(cls);
 
-   if( clsIter != classMap.end() )
+   if (clsIter != classMap.end())
       return clsIter->second;
 
    jclass localRefCls = javaEnv->FindClass(cls);
-   if( localRefCls == NULL )
+   if (localRefCls == NULL)
       return NULL;
 
-   jclass globalRefCls = (jclass)javaEnv->NewGlobalRef(localRefCls);
+   jclass globalRefCls = (jclass) javaEnv->NewGlobalRef(localRefCls);
    javaEnv->DeleteLocalRef(localRefCls);
 
    classMap[cls] = globalRefCls;
@@ -66,25 +66,25 @@ jclass Java4CppRuntime::getClass(JNIEnv *javaEnv, const char* cls)
 jmethodID Java4CppRuntime::getMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature)
 {
    SignatureMethodMap& signatures = methodMap[cls];
-   SignatureMethodMap::iterator sgnIter = signatures.find(std::string(name)+signature);
-   if( sgnIter != signatures.end() )
+   SignatureMethodMap::iterator sgnIter = signatures.find(std::string(name) + signature);
+   if (sgnIter != signatures.end())
       return sgnIter->second;
 
    jmethodID localRefMid = javaEnv->GetMethodID(cls, name, signature);
 
-   signatures[std::string(name)+signature] = localRefMid;
+   signatures[std::string(name) + signature] = localRefMid;
    return localRefMid;
 }
 
 jmethodID Java4CppRuntime::getStaticMethodID(JNIEnv *javaEnv, jclass cls, const char* name, const char* signature)
 {
    SignatureMethodMap& signatures = staticMethodMap[cls];
-   SignatureMethodMap::iterator sgnIter = signatures.find(std::string(name)+signature);
-   if( sgnIter != signatures.end() )
+   SignatureMethodMap::iterator sgnIter = signatures.find(std::string(name) + signature);
+   if (sgnIter != signatures.end())
       return sgnIter->second;
 
    jmethodID localRefMid = javaEnv->GetStaticMethodID(cls, name, signature);
 
-   signatures[std::string(name)+signature] = localRefMid;
+   signatures[std::string(name) + signature] = localRefMid;
    return localRefMid;
 }
