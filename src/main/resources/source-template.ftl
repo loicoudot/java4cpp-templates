@@ -30,9 +30,7 @@ jclass ${class.cppFullName}::j4c_getClass() {
 	if( !globalRefCls ) {
 		JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	   	jclass localRefCls = javaEnv->FindClass("${class.javaName?replace('.', '/')}");
-		if( localRefCls == NULL )
-  			throw std::runtime_error("can't find class \"${class.javaName}\"");
-
+		Java4CppRuntime::handleJavaException(javaEnv);
 		globalRefCls = (jclass)javaEnv->NewGlobalRef(localRefCls);
 		javaEnv->DeleteLocalRef(localRefCls);
 	}
