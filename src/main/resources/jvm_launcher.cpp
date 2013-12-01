@@ -33,22 +33,22 @@ JvmOptions _classPath;
 typedef jint (WINAPI *JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
 typedef jint (WINAPI *JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
 
-void jw_setJrePath(const char* jrePath)
+void jvm_setJrePath(const char* jrePath)
 {
    _jrePath = jrePath;
 }
 
-void jw_clearOptions()
+void jvm_clearOptions()
 {
    _options.clear();
 }
 
-void jw_addOption(const char* option)
+void jvm_addOption(const char* option)
 {
    _options.push_back(option);
 }
 
-void jw_addOptionsFromFile(const char* fileName)
+void jvm_addOptionsFromFile(const char* fileName)
 {
    std::ifstream file(fileName);
    if (file.good())
@@ -64,12 +64,12 @@ void jw_addOptionsFromFile(const char* fileName)
    }
 }
 
-void jw_clearClassPath()
+void jvm_clearClassPath()
 {
    _classPath.clear();
 }
 
-void jw_addClassPath(const char* path)
+void jvm_addClassPath(const char* path)
 {
    if (_pVMJvm == NULL)
    {
