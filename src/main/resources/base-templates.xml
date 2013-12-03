@@ -95,7 +95,7 @@
 			<template class="boolean">
 				<cppType>bool</cppType>
 				<functions>
-					<function name="java2cpp">bool ${functions.arg1} = (bool)${functions.arg2};</function>
+					<function name="java2cpp">bool ${functions.arg1} = ${functions.arg2} == JNI_TRUE;</function>
 					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
 				</functions>
 			</template>
