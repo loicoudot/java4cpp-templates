@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/templates.xsd">
+	<datatypes>
+		<templates>
+			<template class="java.lang.String">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>const std::string&amp;</cppType>
+				<cppReturnType>std::string</cppReturnType>
+				<dependencies>${addInclude("&lt;string&gt;")}</dependencies>
+				<functions>
+					<function name="java2cpp">jclass ${functions.arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
+					jmethodID ${functions.arg1}getBytes = Java4CppRuntime::getMethodID(javaEnv, ${functions.arg1}stringCls, "getBytes", "()[B");
+					jbyteArray ${functions.arg1}bytes = (jbyteArray)javaEnv->CallObjectMethod(${functions.arg2}, ${functions.arg1}getBytes);
+					jsize ${functions.arg1}len = javaEnv->GetArrayLength(${functions.arg1}bytes);
+					std::string ${functions.arg1};
+					${functions.arg1}.resize(${functions.arg1}len);
+					javaEnv->GetByteArrayRegion(${functions.arg1}bytes, 0, ${functions.arg1}len, (jbyte*)&amp;${functions.arg1}[0]);
+					javaEnv->DeleteLocalRef(${functions.arg1}bytes);
+					javaEnv->DeleteLocalRef(${functions.arg2});</function>
+					<function name="cpp2java">jclass ${functions.arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
+					jmethodID ${functions.arg1}ctor = Java4CppRuntime::getMethodID(javaEnv, ${functions.arg1}stringCls, "&lt;init&gt;", "([B)V");
+					jbyteArray ${functions.arg1}bytes = javaEnv->NewByteArray((jsize)${functions.arg2}.size());
+					jstring ${functions.arg1} = NULL;
+					if( ${functions.arg1}bytes )
+					{
+						javaEnv->SetByteArrayRegion(${functions.arg1}bytes, 0, (jsize)${functions.arg2}.size(), (jbyte*)${functions.arg2}.c_str());						
+						${functions.arg1} = (jstring)javaEnv->NewObject(${functions.arg1}stringCls, ${functions.arg1}ctor, ${functions.arg1}bytes);
+						javaEnv->DeleteLocalRef(${functions.arg1}bytes);
+					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});</function>
+				</functions>
+			</template>
+		</templates>
+	</datatypes>
+</templates>
