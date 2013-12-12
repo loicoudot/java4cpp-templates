@@ -15,10 +15,10 @@
 </@cppFormatter>
 
 <#macro headerDefinition class content>
-<#assign separator=" :"/><#t>
-<#if class.superclass??>${separator} ${class.superclass.cppFullName}(${content})<#assign separator=","/><#t>
-<#else><#if class.isCheckedException>${separator} std::exception()<#assign separator=","/></#if></#if><#t>
-<#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}(${content})<#assign separator=","/><#t></#list><#t>
+<#assign separator=" :"/><#t/>
+<#if class.superclass??>${separator} ${class.superclass.cppFullName}(${content})<#assign separator=","/><#t/>
+<#else><#if class.isCheckedException>${separator} std::exception()<#assign separator=","/></#if></#if><#t/>
+<#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}(${content})<#assign separator=","/><#t/></#list><#t/>
 </#macro>
 
 <#macro classImplementation class>
@@ -101,7 +101,7 @@ ${class.cppFullName}::~${class.cppShortName}()<#if class.isThrowable> throw()</#
 	if(javaEnv && _obj) javaEnv->DeleteGlobalRef(_obj);
 }
 
-<@sortConstructors/>
+<@sortConstructors class/>
 <#list constructorList?keys?sort as cppSignature>
 <#assign constructor = constructorList[cppSignature]/>
 ${class.cppFullName}::${class.cppShortName}(${cppSignature})<@headerDefinition class "NULL"/>
@@ -178,7 +178,7 @@ ${field.type.cppReturnType} ${class.cppFullName}::get${field.cppName?cap_first}(
 
 </#list>
 
-<@sortMethods/>
+<@sortMethods class/>
 <#list methodList?keys?sort as cppSignature>
 <#assign method = methodList[cppSignature]/>
 ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
@@ -187,10 +187,10 @@ ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
 	jclass cls = j4c_getClass();
 	static jmethodID mid = javaEnv->Get<#if method.isStatic>Static</#if>MethodID(cls, "${method.javaName}", "(<#list method.parameters as parameter>${parameter.javaSignature}</#list>)${method.returnType.javaSignature}");
  	<#list method.parameters as parameter>${parameter.functions.cpp2java("jarg"+(parameter_index+1), "arg"+(parameter_index+1))}</#list>
-	<#if method.returnType.cppReturnType!="void">${method.returnType.jniSignature} jresult = (${method.returnType.jniSignature})</#if><#t>
-	<#if method.isStatic>javaEnv->CallStatic${method.returnType.jniMethodName}Method(cls, mid<#else><#t>
-	javaEnv->Call${method.returnType.jniMethodName}Method(_obj, mid</#if><#t>
-	<#list method.parameters as parameter>, jarg${parameter_index+1}<#lt></#list>);
+	<#if method.returnType.cppReturnType!="void">${method.returnType.jniSignature} jresult = (${method.returnType.jniSignature})</#if><#t/>
+	<#if method.isStatic>javaEnv->CallStatic${method.returnType.jniMethodName}Method(cls, mid<#else><#t/>
+	javaEnv->Call${method.returnType.jniMethodName}Method(_obj, mid</#if><#t/>
+	<#list method.parameters as parameter>, jarg${parameter_index+1}<#lt/></#list>);
    Java4CppRuntime::handleJavaException(javaEnv); 
 	<#list method.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("jarg"+(parameter_index+1))}</#if></#list>
 	<#if method.returnType.cppReturnType!="void">${method.returnType.functions.java2cpp("result", "jresult")}

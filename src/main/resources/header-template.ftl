@@ -13,7 +13,7 @@
 <#-- Enumerations need to include theirs values -->
 <#if class.isEnum && !class.isInnerClass><@addInclude '"'+fileNameNoExtension+'Enum.h"'/></#if>
 <#-- Try to use forward declaration as much as possible for the class dependencies -->
-<#assign forwards = []>
+<#assign forwards = []/>
 <#list class.dependencies as dependency>
 <#if dependency.owner != class>
 <#-- ... we include the owner class of the superclass if any -->
@@ -23,22 +23,22 @@
 <#-- ... we include the owner class for inner class dependency -->
 <#else><#if dependency.isInnerClass><@addInclude '"'+dependency.owner.cppFullName?replace('::', '_')+'.h"'/>
 <#-- ... other dependencies can be declared as forwards -->
-<#else><#assign forwards = forwards + [dependency]></#if>
+<#else><#assign forwards = forwards + [dependency]/></#if>
 </#if></#if></#if></#list>
 <@printInclude/>
 
 <#-- Regroups and print forward declaration by namespace -->
-<#assign currentNamespace = []>
+<#assign currentNamespace = []/>
 <#list forwards?sort_by("cppFullName") as dependency>
 <#list dependency.cppFullName?split("::") as namespace>
 <#if currentNamespace?size &gt; namespace_index && (currentNamespace[namespace_index] != namespace)>
 <#list 1..(currentNamespace?size-namespace_index) as decrement>}
-<#if currentNamespace?size = 1><#assign currentNamespace = []>
-<#else><#assign currentNamespace = currentNamespace[0..(currentNamespace?size-2)]></#if>
+<#if currentNamespace?size = 1><#assign currentNamespace = []/>
+<#else><#assign currentNamespace = currentNamespace[0..(currentNamespace?size-2)]/></#if>
 </#list>
 </#if> 
 <#if currentNamespace?size &lt;= namespace_index>
-<#if namespace_has_next>namespace ${namespace} {<#assign currentNamespace = currentNamespace + [namespace]><#else>class ${namespace};</#if>
+<#if namespace_has_next>namespace ${namespace} {<#assign currentNamespace = currentNamespace + [namespace]/><#else>class ${namespace};</#if>
 </#if>
 </#list>
 </#list>
@@ -63,9 +63,9 @@
 <#-- Macro for generating class definition (need recursivity)-->
 <#macro classDefinition class>
 class ${class.cppShortName}<#assign separator=": public"/>
-<#if class.superclass??>${separator} ${class.superclass.cppFullName}<#assign separator=", public"/><#t>
-<#else><#if class.isThrowable>${separator} std::exception<#assign separator=", public"/></#if></#if><#t>
-<#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}<#assign separator=", public"/></#list><#t>
+<#if class.superclass??>${separator} ${class.superclass.cppFullName}<#assign separator=", public"/><#t/>
+<#else><#if class.isThrowable>${separator} std::exception<#assign separator=", public"/></#if></#if><#t/>
+<#list class.interfaces?sort_by("cppFullName") as interface>${separator} ${interface.cppFullName}<#assign separator=", public"/></#list><#t/>
 {
 public:
 	<#-- Inner enumerations are declared inside -->
@@ -98,7 +98,7 @@ public:
 	void setJavaObject(jobject obj);
 
 	<#-- Generate contructors -->
-	<@sortConstructors/>
+	<@sortConstructors class/>
 	<#list constructorList?keys?sort as constructor>
 	explicit ${class.cppShortName}(${constructor});
 	</#list>
@@ -111,7 +111,7 @@ public:
 	<#if class.isCloneable>${class.cppReturnType} clone();</#if>
 public:
 	<#-- Generate methods -->
-	<@sortMethods/>
+	<@sortMethods class/>
 	<#list methodList?keys?sort as method>
 	<#if methodList[method].isStatic>static<#else>virtual</#if> ${methodList[method].returnType.cppReturnType} ${method};
 	</#list>

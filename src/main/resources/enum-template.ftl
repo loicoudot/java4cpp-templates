@@ -1,8 +1,8 @@
 <@cppFormatter>
 <#if !class.isEnum>
-<#assign fileName = ''>
+<#assign fileName = ''/>
 <#else>
-<#assign fileName = class.cppFullName?replace('::', '_')+"Enum.h">
+<#assign fileName = class.cppFullName?replace('::', '_')+"Enum.h"/>
 #ifndef ${fileName?replace('.', '_')?upper_case}
 #define ${fileName?replace('.', '_')?upper_case}
 
