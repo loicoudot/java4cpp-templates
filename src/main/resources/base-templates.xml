@@ -17,10 +17,10 @@
 			<cppReturnType>${cppFullName}</cppReturnType>
 			<dependencies>${addDependency(javaName)}</dependencies>
 			<functions>
-				<function name="java2cpp">${cppFullName} ${functions.arg1} = ${cppFullName}(${functions.arg2});
-				javaEnv->DeleteLocalRef(${functions.arg2});
+				<function name="java2cpp">${class.cppFullName} ${arg1} = ${class.cppFullName}(${arg2});
+				javaEnv->DeleteLocalRef(${arg2});
 				</function>
-				<function name="cpp2java">${jniSignature} ${functions.arg1} = ${functions.arg2}.getJavaObject();
+				<function name="cpp2java">${class.jniSignature} ${arg1} = ${arg2}.getJavaObject();
 				</function>
 			</functions>
 		</fallback>
@@ -29,44 +29,44 @@
 			<cppReturnType>std::vector&lt;${innerType.cppReturnType} &gt;</cppReturnType>
 			<dependencies>${addInclude("&lt;vector&gt;")}&lt;#assign current = innerType&gt;&lt;#list 1..20 as x&gt;&lt;#if current.isPrimitive&gt;&lt;#break/&gt;&lt;#elseif !current.isArray&gt;${addDependency(current)}&lt;/#if&gt;&lt;#if !current.innerType??&gt;&lt;#break/&gt;&lt;/#if&gt;&lt;#assign current = current.innerType&gt;&lt;/#list&gt;</dependencies>
 			<functions>
-				<function name="java2cpp">&lt;#if innerType.jniMethodName == "Object"&gt;
-				std::vector&lt;${innerType.cppReturnType} &gt; ${functions.arg1};
-				jsize ${functions.arg1}size = javaEnv->GetArrayLength((jobjectArray)${functions.arg2});
-				for(int i = 0; i &lt; ${functions.arg1}size; ++i) {
-				jobject ${functions.arg1}elem = javaEnv->GetObjectArrayElement((jobjectArray)${functions.arg2}, i);
-				${innerType.functions.java2cpp("${functions.arg1}tmp", "${functions.arg1}elem")}
-				${functions.arg1}.push_back(${functions.arg1}tmp);
-				javaEnv->DeleteLocalRef(${functions.arg1}elem);
+				<function name="java2cpp">&lt;#if class.innerType.jniMethodName == "Object"&gt;
+				std::vector&lt;${class.innerType.cppReturnType} &gt; ${arg1};
+				jsize ${arg1}size = javaEnv->GetArrayLength((jobjectArray)${arg2});
+				for(int i = 0; i &lt; ${arg1}size; ++i) {
+				jobject ${arg1}elem = javaEnv->GetObjectArrayElement((jobjectArray)${arg2}, i);
+				${class.innerType.functions.java2cpp("${arg1}tmp", "${arg1}elem")}
+				${arg1}.push_back(${arg1}tmp);
+				javaEnv->DeleteLocalRef(${arg1}elem);
 				}
-				javaEnv->DeleteLocalRef(${functions.arg2});
+				javaEnv->DeleteLocalRef(${arg2});
 				&lt;#else&gt;
-				${innerType.cppReturnType}* ${functions.arg1}values = (${innerType.cppReturnType}*)javaEnv->Get${innerType.jniMethodName}ArrayElements((${jniSignature})${functions.arg2}, NULL);
-				std::vector&lt;${innerType.cppReturnType} &gt; ${functions.arg1}(${functions.arg1}values, ${functions.arg1}values+javaEnv->GetArrayLength((${jniSignature})${functions.arg2}));
-				javaEnv->Release${innerType.jniMethodName}ArrayElements((${jniSignature})${functions.arg2}, (${innerType.jniSignature}*)${functions.arg1}values, JNI_ABORT);
-				javaEnv->DeleteLocalRef(${functions.arg2});
+				${class.innerType.cppReturnType}* ${arg1}values = (${class.innerType.cppReturnType}*)javaEnv->Get${class.innerType.jniMethodName}ArrayElements((${class.jniSignature})${arg2}, NULL);
+				std::vector&lt;${class.innerType.cppReturnType} &gt; ${arg1}(${arg1}values, ${arg1}values+javaEnv->GetArrayLength((${class.jniSignature})${arg2}));
+				javaEnv->Release${class.innerType.jniMethodName}ArrayElements((${class.jniSignature})${arg2}, (${class.innerType.jniSignature}*)${arg1}values, JNI_ABORT);
+				javaEnv->DeleteLocalRef(${arg2});
 				&lt;/#if&gt;
 				</function>
-				<function name="cpp2java">&lt;#if innerType.jniMethodName == "Object"&gt;
-				jclass ${functions.arg1}cls = Java4CppRuntime::getClass(javaEnv, "${innerType.javaName?replace('.', '/')}");
-				jobjectArray ${functions.arg1} = javaEnv->NewObjectArray((jsize)${functions.arg2}.size(), ${functions.arg1}cls, NULL);
-				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
-					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
-					javaEnv->SetObjectArrayElement(${functions.arg1}, ${functions.arg1}idx, ${functions.arg1}elem);
-					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")}&lt;/#if&gt;
+				<function name="cpp2java">&lt;#if class.innerType.jniMethodName == "Object"&gt;
+				jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "${class.innerType.javaName?replace('.', '/')}");
+				jobjectArray ${arg1} = javaEnv->NewObjectArray((jsize)${arg2}.size(), ${arg1}cls, NULL);
+				for(jsize ${arg1}idx = 0; ${arg1}idx &lt; (jsize)${arg2}.size(); ++${arg1}idx) {
+					${class.innerType.functions.cpp2java("${arg1}elem", "${arg2}[${arg1}idx]")}
+					javaEnv->SetObjectArrayElement(${arg1}, ${arg1}idx, ${arg1}elem);
+					&lt;#if class.innerType.functions.cpp2javaClean??&gt;${class.innerType.functions.cpp2javaClean("${arg1}elem")}&lt;/#if&gt;
 				}
-				&lt;#elseif innerType.jniMethodName == "Boolean"&gt;
-				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array((jsize)${functions.arg2}.size());
-				for(jsize ${functions.arg1}idx = 0; ${functions.arg1}idx &lt; (jsize)${functions.arg2}.size(); ++${functions.arg1}idx) {
-					${innerType.functions.cpp2java("${functions.arg1}elem", "${functions.arg2}[${functions.arg1}idx]")}
-					javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, ${functions.arg1}idx, 1, (${innerType.jniSignature}*)&amp;${functions.arg1}elem);
-					&lt;#if innerType.functions.cpp2javaClean??&gt;${innerType.functions.cpp2javaClean("${functions.arg1}elem")};&lt;/#if&gt;
+				&lt;#elseif class.innerType.jniMethodName == "Boolean"&gt;
+				${class.jniSignature} ${arg1} = javaEnv->New${class.innerType.jniMethodName}Array((jsize)${arg2}.size());
+				for(jsize ${arg1}idx = 0; ${arg1}idx &lt; (jsize)${arg2}.size(); ++${arg1}idx) {
+					${class.innerType.functions.cpp2java("${arg1}elem", "${arg2}[${arg1}idx]")}
+					javaEnv->Set${class.innerType.jniMethodName}ArrayRegion(${arg1}, ${arg1}idx, 1, (${class.innerType.jniSignature}*)&amp;${arg1}elem);
+					&lt;#if class.innerType.functions.cpp2javaClean??&gt;${class.innerType.functions.cpp2javaClean("${arg1}elem")};&lt;/#if&gt;
 				}
 				&lt;#else&gt;
-				${jniSignature} ${functions.arg1} = javaEnv->New${innerType.jniMethodName}Array((jsize)${functions.arg2}.size());
-				javaEnv->Set${innerType.jniMethodName}ArrayRegion(${functions.arg1}, 0, (jsize)${functions.arg2}.size(), (${innerType.jniSignature}*)&amp;${functions.arg2}[0]);
+				${class.jniSignature} ${arg1} = javaEnv->New${class.innerType.jniMethodName}Array((jsize)${arg2}.size());
+				javaEnv->Set${class.innerType.jniMethodName}ArrayRegion(${arg1}, 0, (jsize)${arg2}.size(), (${class.innerType.jniSignature}*)&amp;${arg2}[0]);
 				&lt;/#if&gt;
 				</function>
-				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});
+				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});
 				</function>
 			</functions>
 		</array>
@@ -74,17 +74,17 @@
 			<cppType>${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum</cppType>
 			<dependencies>${addDependency(javaName)}</dependencies>
 			<functions>
-				<function name="java2cpp">jclass enumcls = Java4CppRuntime::getClass(javaEnv, "${javaName?replace('.', '/')}");
+				<function name="java2cpp">jclass enumcls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
 				jmethodID ordinal = Java4CppRuntime::getMethodID(javaEnv, enumcls, "ordinal", "()I");
-				${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum ${functions.arg1} = (${cppFullName}&lt;#if !isInnerClass&gt;Enum&lt;/#if&gt;::${cppShortName}Enum)javaEnv->CallIntMethod(${functions.arg2}, ordinal);
+				${class.cppFullName}&lt;#if !class.isInnerClass&gt;Enum&lt;/#if&gt;::${class.cppShortName}Enum ${arg1} = (${class.cppFullName}&lt;#if !class.isInnerClass&gt;Enum&lt;/#if&gt;::${class.cppShortName}Enum)javaEnv->CallIntMethod(${arg2}, ordinal);
 				</function>
-				<function name="cpp2java">jclass ${functions.arg1}cls = Java4CppRuntime::getClass(javaEnv, "${javaName?replace('.', '/')}");
-				jmethodID ${functions.arg1}values = Java4CppRuntime::getStaticMethodID(javaEnv, ${functions.arg1}cls, "values", "()[${javaSignature}");
-      			jobjectArray ${functions.arg1}array = (jobjectArray)javaEnv->CallStaticObjectMethod(${functions.arg1}cls, ${functions.arg1}values);
-      			jobject ${functions.arg1} = javaEnv->GetObjectArrayElement(${functions.arg1}array, (jsize)${functions.arg2});
+				<function name="cpp2java">jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "${class.javaName?replace('.', '/')}");
+				jmethodID ${arg1}values = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg1}cls, "values", "()[${class.javaSignature}");
+      			jobjectArray ${arg1}array = (jobjectArray)javaEnv->CallStaticObjectMethod(${arg1}cls, ${arg1}values);
+      			jobject ${arg1} = javaEnv->GetObjectArrayElement(${arg1}array, (jsize)${arg2});
 				</function>
-				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});
-				javaEnv->DeleteLocalRef(${functions.arg1}array);
+				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});
+				javaEnv->DeleteLocalRef(${arg1}array);
 				</function>
 			</functions>
 		</enum>
@@ -95,57 +95,57 @@
 			<template class="boolean">
 				<cppType>bool</cppType>
 				<functions>
-					<function name="java2cpp">bool ${functions.arg1} = ${functions.arg2} == JNI_TRUE;</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">bool ${arg1} = ${arg2} == JNI_TRUE;</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="byte">
 				<cppType>signed char</cppType>
 				<functions>
-					<function name="java2cpp">signed char ${functions.arg1} = (signed char)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">signed char ${arg1} = (signed char)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="char">
 				<cppType>char</cppType>
 				<functions>
-					<function name="java2cpp">char ${functions.arg1} = (char)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">char ${arg1} = (char)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="double">
 				<cppType>double</cppType>
 				<functions>
-					<function name="java2cpp">double ${functions.arg1} = (double)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">double ${arg1} = (double)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="float">
 				<cppType>float</cppType>
 				<functions>
-					<function name="java2cpp">float ${functions.arg1} = (float)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">float ${arg1} = (float)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="int">
 				<cppType>int</cppType>
 				<functions>
-					<function name="java2cpp">int ${functions.arg1} = (int)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">int ${arg1} = (int)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="long">
 				<cppType>long long</cppType>
 				<functions>
-					<function name="java2cpp">long long ${functions.arg1} = (long long)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">long long ${arg1} = (long long)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 			<template class="short">
 				<cppType>short</cppType>
 				<functions>
-					<function name="java2cpp">short ${functions.arg1} = (short)${functions.arg2};</function>
-					<function name="cpp2java">${jniSignature} ${functions.arg1} = (${jniSignature})${functions.arg2};</function>
+					<function name="java2cpp">short ${arg1} = (short)${arg2};</function>
+					<function name="cpp2java">${class.jniSignature} ${arg1} = (${class.jniSignature})${arg2};</function>
 				</functions>
 			</template>
 		</templates>

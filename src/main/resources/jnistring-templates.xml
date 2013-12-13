@@ -10,11 +10,11 @@
 				<cppReturnType>std::string</cppReturnType>
 				<dependencies>${addInclude("&lt;string&gt;")}</dependencies>
 				<functions>
-					<function name="java2cpp">const char* ${functions.arg1}utf = javaEnv->GetStringUTFChars((jstring)${functions.arg2}, NULL); 
-					std::string ${functions.arg1}(${functions.arg1}utf);
-					javaEnv->ReleaseStringUTFChars((jstring)${functions.arg2}, ${functions.arg1}utf);</function>
-					<function name="cpp2java">jstring ${functions.arg1} = javaEnv->NewStringUTF(${functions.arg2}.c_str());</function>
-					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${functions.arg1});</function>
+					<function name="java2cpp">const char* ${arg1}utf = javaEnv->GetStringUTFChars((jstring)${arg2}, NULL); 
+					std::string ${arg1}(${arg1}utf);
+					javaEnv->ReleaseStringUTFChars((jstring)${arg2}, ${arg1}utf);</function>
+					<function name="cpp2java">jstring ${arg1} = javaEnv->NewStringUTF(${arg2}.c_str());</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
 				</functions>
 			</template>
 		</templates>
