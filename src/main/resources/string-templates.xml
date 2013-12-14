@@ -8,26 +8,26 @@
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>const std::string&amp;</cppType>
 				<cppReturnType>std::string</cppReturnType>
-				<dependencies>${addInclude("&lt;string&gt;")}</dependencies>
+				<dependencies>${class.addInclude("&lt;string&gt;")}</dependencies>
 				<functions>
 					<function name="java2cpp">jclass ${arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
 					jmethodID ${arg1}getBytes = Java4CppRuntime::getMethodID(javaEnv, ${arg1}stringCls, "getBytes", "()[B");
-					jbyteArray ${arg1}bytes = (jbyteArray)javaEnv->CallObjectMethod(${arg2}, ${arg1}getBytes);
+					jbyteArray ${arg1}bytes = (jbyteArray)javaEnv->CallObjectMethod(${arg1}, ${arg1}getBytes);
 					jsize ${arg1}len = javaEnv->GetArrayLength(${arg1}bytes);
-					std::string ${arg1};
-					${arg1}.resize(${arg1}len);
-					javaEnv->GetByteArrayRegion(${arg1}bytes, 0, ${arg1}len, (jbyte*)&amp;${arg1}[0]);
+					std::string ${arg2};
+					${arg2}.resize(${arg1}len);
+					javaEnv->GetByteArrayRegion(${arg1}bytes, 0, ${arg1}len, (jbyte*)&amp;${arg2}[0]);
 					javaEnv->DeleteLocalRef(${arg1}bytes);
-					javaEnv->DeleteLocalRef(${arg2});</function>
-					<function name="cpp2java">jclass ${arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
-					jmethodID ${arg1}ctor = Java4CppRuntime::getMethodID(javaEnv, ${arg1}stringCls, "&lt;init&gt;", "([B)V");
-					jbyteArray ${arg1}bytes = javaEnv->NewByteArray((jsize)${arg2}.size());
-					jstring ${arg1} = NULL;
-					if( ${arg1}bytes )
+					javaEnv->DeleteLocalRef(${arg1});</function>
+					<function name="cpp2java">jclass ${arg2}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
+					jmethodID ${arg2}ctor = Java4CppRuntime::getMethodID(javaEnv, ${arg2}stringCls, "&lt;init&gt;", "([B)V");
+					jbyteArray ${arg2}bytes = javaEnv->NewByteArray((jsize)${arg1}.size());
+					jstring ${arg2} = NULL;
+					if( ${arg2}bytes )
 					{
-						javaEnv->SetByteArrayRegion(${arg1}bytes, 0, (jsize)${arg2}.size(), (jbyte*)${arg2}.c_str());						
-						${arg1} = (jstring)javaEnv->NewObject(${arg1}stringCls, ${arg1}ctor, ${arg1}bytes);
-						javaEnv->DeleteLocalRef(${arg1}bytes);
+						javaEnv->SetByteArrayRegion(${arg2}bytes, 0, (jsize)${arg1}.size(), (jbyte*)${arg1}.c_str());						
+						${arg2} = (jstring)javaEnv->NewObject(${arg2}stringCls, ${arg2}ctor, ${arg2}bytes);
+						javaEnv->DeleteLocalRef(${arg2}bytes);
 					}</function>
 					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
 				</functions>

@@ -110,7 +110,7 @@ ${class.cppFullName}::${class.cppShortName}(${cppSignature})<@headerDefinition c
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	jclass cls = j4c_getClass();
 	static jmethodID mid = javaEnv->GetMethodID(cls, "<init>", "(<#list constructor.parameters as parameter>${parameter.javaSignature}</#list>)V");
-	<#list constructor.parameters as parameter>${parameter.functions.cpp2java("jarg"+(parameter_index+1), "arg"+(parameter_index+1))}</#list>
+	<#list constructor.parameters as parameter>${parameter.functions.cpp2java("arg"+(parameter_index+1), "jarg"+(parameter_index+1))}</#list>
 	jobject o = javaEnv->NewObject(cls, mid<#list constructor.parameters as parameter>, jarg${parameter_index+1}</#list>);
 	Java4CppRuntime::handleJavaException(javaEnv);
 	setJavaObject(o);
@@ -186,14 +186,14 @@ ${method.returnType.cppReturnType} ${class.cppFullName}::${cppSignature}
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	jclass cls = j4c_getClass();
 	static jmethodID mid = javaEnv->Get<#if method.isStatic>Static</#if>MethodID(cls, "${method.javaName}", "(<#list method.parameters as parameter>${parameter.javaSignature}</#list>)${method.returnType.javaSignature}");
- 	<#list method.parameters as parameter>${parameter.functions.cpp2java("jarg"+(parameter_index+1), "arg"+(parameter_index+1))}</#list>
+ 	<#list method.parameters as parameter>${parameter.functions.cpp2java("arg"+(parameter_index+1), "jarg"+(parameter_index+1))}</#list>
 	<#if method.returnType.cppReturnType!="void">${method.returnType.jniSignature} jresult = (${method.returnType.jniSignature})</#if><#t/>
 	<#if method.isStatic>javaEnv->CallStatic${method.returnType.jniMethodName}Method(cls, mid<#else><#t/>
 	javaEnv->Call${method.returnType.jniMethodName}Method(_obj, mid</#if><#t/>
 	<#list method.parameters as parameter>, jarg${parameter_index+1}<#lt/></#list>);
    Java4CppRuntime::handleJavaException(javaEnv); 
 	<#list method.parameters as parameter><#if parameter.functions.cpp2javaClean??>${parameter.functions.cpp2javaClean("jarg"+(parameter_index+1))}</#if></#list>
-	<#if method.returnType.cppReturnType!="void">${method.returnType.functions.java2cpp("result", "jresult")}
+	<#if method.returnType.cppReturnType!="void">${method.returnType.functions.java2cpp("jresult", "result")}
 	return result;</#if> 
 }
 
