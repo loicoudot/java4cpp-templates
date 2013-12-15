@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com https://raw.github.com/loicoudot/java4cpp-core/master/templates.xsd">
+	<datatypes>
+		<templates>
+			<template class="java.lang.Boolean">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;bool></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;bool> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Boolean;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "booleanValue", "()Z");
+      				   ${arg2} = (bool)javaEnv->CallBooleanMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Boolean;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(Z)Ljava/lang/Boolean;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jboolean)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Byte">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;unsigned char></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;unsigned char> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Byte;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "byteValue", "()B");
+      				   ${arg2} = (unsigned char)javaEnv->CallByteMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Byte;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(B)Ljava/lang/Byte;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jbyte)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Character">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;char></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;char> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Character;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "charValue", "()C");
+      				   ${arg2} = (char)javaEnv->CallCharMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Character;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(C)Ljava/lang/Character;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jchar)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Double">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;double></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;double> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Double;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "doubleValue", "()D");
+      				   ${arg2} = (double)javaEnv->CallDoubleMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Double;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(D)Ljava/lang/Double;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jdouble)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Float">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;float></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;float> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Float;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "floatValue", "()F");
+      				   ${arg2} = (float)javaEnv->CallFloatMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Float;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(F)Ljava/lang/Float;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jfloat)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Integer">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;int></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;int> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Integer;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "intValue", "()I");
+      				   ${arg2} = (int)javaEnv->CallIntMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Integer;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(I)Ljava/lang/Integer;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jint)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Long">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;long long></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;long long> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Long;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "longValue", "()J");
+      				   ${arg2} = (long long)javaEnv->CallLongMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Long;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(J)Ljava/lang/Long;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jlong)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+			<template class="java.lang.Short">
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>boost::optional&lt;short></cppType>
+				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<functions>
+					<function name="java2cpp">boost::optional&lt;short> ${arg2};
+					if(${arg1} != NULL) {
+					   jclass ${arg1}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Short;");
+					   jmethodID ${arg1}value = Java4CppRuntime::getMethodID(javaEnv, ${arg1}cls, "shortValue", "()S");
+      				   ${arg2} = (short)javaEnv->CallShortMethod(${arg1}, ${arg1}value);
+      				   javaEnv->DeleteLocalRef(${arg1});
+					}</function>
+					<function name="cpp2java">jobject ${arg2} = NULL;
+   					if (${arg1}) {
+      					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "Ljava/lang/Short;");
+      					jmethodID ${arg2}value = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "valueOf", "(S)Ljava/lang/Short;");
+      					${arg2} = javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}value, (jshort)${arg1}.get());
+   					}</function>
+					<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});</function>
+				</functions>
+			</template>
+		</templates>
+	</datatypes>
+</templates>
