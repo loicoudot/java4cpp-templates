@@ -2,9 +2,9 @@
 <@cppFormatter>
 <#assign fileName><@fileName class/>.cpp</#assign>
 <@initIncludes ['"'+class.type.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"jvm_launcher.h"', '<stdexcept>']/>
-<#list class.type.dependencies as dependency>
+<#list class.dependencies as dependency>
 <#if dependency.type.owner != class>
-<@addInclude '"'+dependency.type.owner.cppFullName?replace('::', '_')+'.h"'/>
+<@addInclude '"'+dependency.type.owner.type.cppFullName?replace('::', '_')+'.h"'/>
 </#if>
 </#list>
 <#if class.type.isEnum><@addInclude '<map>'/></#if>

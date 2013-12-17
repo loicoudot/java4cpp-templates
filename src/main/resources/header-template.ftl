@@ -9,12 +9,12 @@
 <#-- Adds includes from the runtime and Java4Cpp -->
 <@initIncludes ['"jni.h"']/>
 <#if class.type.isThrowable><@addIncludes ['<stdexcept>', '<string>']/></#if>
-<@addIncludes class.type.includes/>
+<@addIncludes class.includes/>
 <#-- Enumerations need to include theirs values -->
 <#if class.type.isEnum && !class.type.isInnerClass><@addInclude '"'+fileNameNoExtension+'Enum.h"'/></#if>
 <#-- Try to use forward declaration as much as possible for the class dependencies -->
 <#assign forwards = []/>
-<#list class.type.dependencies as dependency>
+<#list class.dependencies as dependency>
 <#if dependency.type.owner != class>
 <#-- ... we include the owner class of the superclass if any -->
 <#if class.content.superclass?? && dependency = class.content.superclass><@addInclude '"'+dependency.type.owner.type.cppFullName?replace('::', '_')+'.h"'/>
