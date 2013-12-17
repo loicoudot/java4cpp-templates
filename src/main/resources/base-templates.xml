@@ -27,7 +27,7 @@
 		<array>
 			<cppType>const std::vector&lt;${class.type.innerType.type.cppReturnType} &gt;&amp;</cppType>
 			<cppReturnType>std::vector&lt;${class.type.innerType.type.cppReturnType} &gt;</cppReturnType>
-			<dependencies>${class.type.addIncludes("&lt;vector&gt;")}&lt;#assign current = class.type.innerType&gt;&lt;#list 1..20 as x&gt;&lt;#if !current.type.innerType??&gt;&lt;#break/&gt;&lt;/#if&gt;&lt;#assign current = current.type.innerType&gt;&lt;/#list&gt;${class.type.addDependencies(current.type.outterDependencies)}${class.type.addIncludes(current.type.outterIncludes)}</dependencies>
+			<dependencies>${class.type.addIncludes("&lt;vector&gt;")}${class.type.addDependencies(class.type.finalInnerType.type.dependencies)}${class.type.addIncludes(class.type.finalInnerType.type.includes)}</dependencies>
 			<functions>
 				<function name="java2cpp">&lt;#if class.type.innerType.type.jniMethodName == "Object"&gt;
 				std::vector&lt;${class.type.innerType.type.cppReturnType} &gt; ${arg2};
