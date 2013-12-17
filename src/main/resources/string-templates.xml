@@ -8,7 +8,7 @@
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>const std::string&amp;</cppType>
 				<cppReturnType>std::string</cppReturnType>
-				<dependencies>${class.addInclude("&lt;string&gt;")}</dependencies>
+				<dependencies>${class.type.addIncludes("&lt;string&gt;")}</dependencies>
 				<functions>
 					<function name="java2cpp">jclass ${arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
 					jmethodID ${arg1}getBytes = Java4CppRuntime::getMethodID(javaEnv, ${arg1}stringCls, "getBytes", "()[B");

@@ -7,7 +7,7 @@
 			<template class="java.lang.Boolean">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;bool></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;bool> ${arg2};
 					if(${arg1} != NULL) {
@@ -28,7 +28,7 @@
 			<template class="java.lang.Byte">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;unsigned char></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;unsigned char> ${arg2};
 					if(${arg1} != NULL) {
@@ -49,7 +49,7 @@
 			<template class="java.lang.Character">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;char></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;char> ${arg2};
 					if(${arg1} != NULL) {
@@ -70,7 +70,7 @@
 			<template class="java.lang.Double">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;double></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;double> ${arg2};
 					if(${arg1} != NULL) {
@@ -91,7 +91,7 @@
 			<template class="java.lang.Float">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;float></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;float> ${arg2};
 					if(${arg1} != NULL) {
@@ -112,7 +112,7 @@
 			<template class="java.lang.Integer">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;int></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;int> ${arg2};
 					if(${arg1} != NULL) {
@@ -133,7 +133,7 @@
 			<template class="java.lang.Long">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;long long></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;long long> ${arg2};
 					if(${arg1} != NULL) {
@@ -154,7 +154,7 @@
 			<template class="java.lang.Short">
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>boost::optional&lt;short></cppType>
-				<dependencies>${class.addInclude("\"boost/optional.hpp\"")}</dependencies>
+				<dependencies>${class.type.addIncludes("\"boost/optional.hpp\"")}</dependencies>
 				<functions>
 					<function name="java2cpp">boost::optional&lt;short> ${arg2};
 					if(${arg1} != NULL) {
