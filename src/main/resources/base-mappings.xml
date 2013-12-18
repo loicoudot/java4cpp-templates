@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mappings xmlns="http://java4cpp.loicoudot.github.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java4cpp.loicoudot.github.com https://raw.github.com/loicoudot/java4cpp-core/master/mappings.xsd">
+<mappings xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com https://raw.github.com/loicoudot/java4cpp-core/master/mappings.xsd">
 	<classes>
-		<class class="java.lang.Class" exportAll="false"/>
-		<class class="java.lang.Throwable" exportAll="false"/>
+		<class class="java.lang.Class" exportAll="false" />
+		<class class="java.lang.Throwable" exportAll="false" />
+		<class class="java.lang.Object" exportAll="false">
+			<methods>
+				<wrappes>
+					<wrappe>toString()</wrappe>
+				</wrappes>
+			</methods>
+		</class>
 	</classes>
 	<keywords>
 		<keyword>delete</keyword>
