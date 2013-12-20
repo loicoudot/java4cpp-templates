@@ -100,9 +100,9 @@
 				</functions>
 			</template>
 			<template class="byte">
-				<cppType>signed char</cppType>
+				<cppType>unsigned char</cppType>
 				<functions>
-					<function name="java2cpp">signed char ${arg2} = (signed char)${arg1};</function>
+					<function name="java2cpp">unsigned char ${arg2} = (unsigned char)${arg1};</function>
 					<function name="cpp2java">${class.type.jniSignature} ${arg2} = (${class.type.jniSignature})${arg1};</function>
 				</functions>
 			</template>
