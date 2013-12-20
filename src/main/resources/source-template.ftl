@@ -166,13 +166,13 @@ ${class.type.cppReturnType} ${class.type.cppFullName}::clone()
 }
 </#if>
 
-<#list class.content.staticFields?sort_by(["type", "cppName"]) as field>
-${field.type.cppReturnType} ${class.type.cppFullName}::get${field.cppName?cap_first}() {
+<#list class.content.staticFields?sort_by("cppName") as field>
+${field.type.type.cppReturnType} ${class.type.cppFullName}::get${field.cppName?cap_first}() {
 	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
 	jclass cls = j4c_getClass();
-	jfieldID fid = javaEnv->GetStaticFieldID(cls, "${field.javaName}", "${field.type.javaSignature}");
-   ${field.type.jniSignature} jvar = javaEnv->GetStatic${field.type.jniMethodName}Field(cls, fid);
-   ${field.type.functions.java2cpp("jvar", "var")}
+	jfieldID fid = javaEnv->GetStaticFieldID(cls, "${field.javaName}", "${field.type.type.javaSignature}");
+   ${field.type.type.jniSignature} jvar = javaEnv->GetStatic${field.type.type.jniMethodName}Field(cls, fid);
+   ${field.type.type.functions.java2cpp("jvar", "var")}
    return var;
 }
 

@@ -91,8 +91,8 @@ public:
 	</#if>
 	</#list>
 	<#-- Generate getters for static fields -->
-	<#list class.content.staticFields?sort_by(["type", "cppName"]) as field>
-	static ${field.type.cppReturnType} get${field.cppName?cap_first}();
+	<#list class.content.staticFields?sort_by("cppName") as field>
+	static ${field.type.type.cppReturnType} get${field.cppName?cap_first}();
 	</#list>
 	jobject getJavaObject() const;
 	void setJavaObject(jobject obj);
