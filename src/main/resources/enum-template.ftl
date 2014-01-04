@@ -1,7 +1,4 @@
 <@cppFormatter>
-<#if !class.type.isEnum>
-<#assign fileName = ''/>
-<#else>
 <#assign fileName = class.type.cppFullName?replace('::', '_')+"Enum.h"/>
 #ifndef ${fileName?replace('.', '_')?upper_case}
 #define ${fileName?replace('.', '_')?upper_case}
@@ -22,5 +19,4 @@ ${key}<#if key_has_next>,</#if>
 }
 </#list>
 #endif
-</#if>
 </@cppFormatter>
