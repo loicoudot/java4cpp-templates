@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://java4cpp.loicoudot.github.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com http://raw.github.com/loicoudot/java4cpp-core/master/templates.xsd">
+	<datatypes>
+		<templates>
+			<template class="java.util.List">
+				<sourceTemplates>
+					<sourceTemplate>list-template.ftl</sourceTemplate>
+				</sourceTemplates>
+				<needAnalyzing>false</needAnalyzing>
+				<cppType>&lt;#if class.parameters??>const java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&amp;&lt;#else>const java4cpp::list&lt;java::lang::Object>&amp;&lt;/#if></cppType>
+				<cppReturnType>&lt;#if class.parameters??>java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&lt;#else>java4cpp::list&lt;java::lang::Object>&lt;/#if></cppReturnType>
+				<dependencies>&lt;#if class.parameters??>${class.type.addIncludes("\"java4cpp_listOf"+class.parameters[0].type.cppShortName+".h\"")}${class.type.addDependencies(class.parameters[0])}
+				&lt;#else>${class.type.addIncludes("\"java4cpp_listOfObject.h\"")}${class.type.addDependencies("java.lang.Object")}&lt;/#if></dependencies>
+				<functions>
+					<function name="java2cpp">&lt;#if class.parameters??>java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&lt;#else>java4cpp::list&lt;java::lang::Object>&lt;/#if> ${arg2}(${arg1});
+					javaEnv->DeleteLocalRef(${arg1});
+					</function>
+					<function name="cpp2java">${class.type.jniSignature} ${arg2} = ${arg1}.getJavaObject();
+					</function>
+				</functions>
+			</template>
+		</templates>
+	</datatypes>
+	<copyFiles>
+		<copyFile>java4cpp_list.h</copyFile>
+	</copyFiles>
+</templates>
