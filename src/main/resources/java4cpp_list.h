@@ -6,16 +6,25 @@
 
 namespace java4cpp {
 
-   template<typename T>
+   template<typename T, class A = std::allocator<T> >
    class list
    {
    public:
+      typedef A                           allocator_type;
+      typedef T                           value_type;
+      typedef T                           reference;
+      typedef const T                     const_reference;
+      typedef T*                          pointer;
+      typedef const T*                    const_pointer;
+      typedef typename A::size_type       size_type;
+      typedef typename A::difference_type difference_type;
+
 	   list(jobject object) {
 		   _obj = NULL;
 		   setJavaObject(object);
 	   }
 
-	   jclass j4c_getClass() {
+	   jclass j4c_getClass() const {
 	      static jclass globalRefCls = NULL;
 	      if( !globalRefCls ) {
 	         JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
@@ -45,6 +54,13 @@ namespace java4cpp {
 	   jobject getJavaObject() const {
 		   return _obj;
 	   }
+
+	   size_type size() const {
+	      JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
+	      static jmethodID jsize = Java4CppRuntime::getMethodID(javaEnv, j4c_getClass(), "size", "()I");
+	      return (size_type)javaEnv->CallIntMethod(_obj, jsize);
+	   }
+
 
 	   T get(int idx) {
 		   return T();
