@@ -1,5 +1,8 @@
 <#include "common.ftl"/>
 <@cppFormatter>
+<#if class.parameters??>
+<#assign fileName = ''/>
+<#else>
 <#assign fileName><@fileName class/>.cpp</#assign>
 <@initIncludes ['"'+class.type.cppFullName?replace('::', '_')+'.h"', '"java4cpp_runtime.h"', '"jvm_launcher.h"', '<stdexcept>']/>
 <#list class.dependencies as dependency>
@@ -12,6 +15,7 @@
 <@printInclude/>
 
 <@classImplementation class/>
+</#if>
 </@cppFormatter>
 
 <#macro headerDefinition class content>

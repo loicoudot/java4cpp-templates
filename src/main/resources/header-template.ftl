@@ -1,5 +1,8 @@
 <#include "common.ftl"/>
 <@cppFormatter>
+<#if class.parameters??>
+<#assign fileName = ''/>
+<#else>
 <#-- Sets the name of the generated file -->
 <#assign fileNameNoExtension><@fileName class/></#assign>
 <#assign fileName = fileNameNoExtension+'.h'/>
@@ -58,6 +61,7 @@
 <#if namespace_has_next>}</#if>
 </#list>
 #endif
+</#if>
 </@cppFormatter>
 
 <#-- Macro for generating class definition (need recursivity)-->

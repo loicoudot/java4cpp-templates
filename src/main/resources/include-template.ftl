@@ -2,8 +2,8 @@
 #ifndef JAVA_CLASSES_H
 #define JAVA_CLASSES_H
 
-<#list classes?sort_by(["type", "cppFullName"]) as class>
-#include "${class.type.cppFullName?replace('::', '_')}.h"
+<#list symbols?sort as symbol>
+<#if symbol?ends_with('.h')>#include "${symbol}"</#if>
 </#list>
 
 #endif
