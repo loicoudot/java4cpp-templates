@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xmlns="http://java4cpp.loicoudot.github.com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java4cpp.loicoudot.github.com file:///Users/maison/Documents/workspace/java4cpp-core/templates.xsd">
+	xsi:schemaLocation="http://java4cpp.loicoudot.github.com https://raw.github.com/loicoudot/java4cpp-core/master/templates.xsd">
 	<datatypes>
 		<templates>
 			<template class="java.lang.String">
