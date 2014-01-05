@@ -8,10 +8,12 @@
 #define ${fileName?replace('.', '_')?upper_case}
 
 #include "java4cpp_list.h"
-#include "${class.parameters[0].type.cppFullName?replace('::', '_')}.h"
+<#list class.parameters[0].type.dependencies as dependency>
+#include "${dependency.type.owner.type.cppFullName?replace('::', '_')}.h"
+</#list>
 
 template<>
-${class.parameters[0].type.cppFullName} java4cpp::list<${class.parameters[0].type.cppFullName}>::get(int idx) {
+inline ${class.parameters[0].type.cppReturnType} java4cpp::list<${class.parameters[0].type.cppReturnType}>::get(int idx) {
     return 0;
 }
 

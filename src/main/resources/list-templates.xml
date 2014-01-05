@@ -11,7 +11,7 @@
 				<needAnalyzing>false</needAnalyzing>
 				<cppType>&lt;#if class.parameters??>const java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&amp;&lt;#else>const java4cpp::list&lt;java::lang::Object>&amp;&lt;/#if></cppType>
 				<cppReturnType>&lt;#if class.parameters??>java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&lt;#else>java4cpp::list&lt;java::lang::Object>&lt;/#if></cppReturnType>
-				<dependencies>&lt;#if class.parameters??>${class.type.addIncludes("\"java4cpp_listOf"+class.parameters[0].type.cppShortName+".h\"")}${class.type.addDependencies(class.parameters[0])}
+				<dependencies>&lt;#if class.parameters??>${class.type.addIncludes("\"java4cpp_listOf"+class.parameters[0].type.cppShortName+".h\"")}${class.type.addIncludes(class.parameters[0].type.includes)}${class.type.addDependencies(class.parameters[0].type.dependencies)}
 				&lt;#else>${class.type.addIncludes("\"java4cpp_listOfObject.h\"")}${class.type.addDependencies("java.lang.Object")}&lt;/#if></dependencies>
 				<functions>
 					<function name="java2cpp">&lt;#if class.parameters??>java4cpp::list&lt;${class.parameters[0].type.cppReturnType} >&lt;#else>java4cpp::list&lt;java::lang::Object>&lt;/#if> ${arg2}(${arg1});
