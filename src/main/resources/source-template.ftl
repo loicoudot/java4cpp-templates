@@ -22,7 +22,7 @@
 <#assign separator=" :"/><#t/>
 <#if class.content.superclass??>${separator} ${class.content.superclass.type.cppFullName}(${content})<#assign separator=","/><#t/>
 <#else><#if class.type.isCheckedException>${separator} std::exception()<#assign separator=","/></#if></#if><#t/>
-<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${separator} ${interface.cppFullName}(${content})<#assign separator=","/><#t/></#list><#t/>
+<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${separator} ${interface.type.cppFullName}(${content})<#assign separator=","/><#t/></#list><#t/>
 </#macro>
 
 <#macro classImplementation class>
@@ -59,7 +59,7 @@ void ${class.type.cppFullName}::setJavaObject(jobject obj)
    	}
    	else _obj = NULL;
    	<#if class.content.superclass??>${class.content.superclass.type.cppFullName}::setJavaObject(obj);</#if>
-   	<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${interface.cppFullName}::setJavaObject(obj);</#list>
+   	<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${interface.type.cppFullName}::setJavaObject(obj);</#list>
 }
 
 <#if class.type.isEnum>

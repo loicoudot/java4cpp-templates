@@ -69,7 +69,7 @@
 class ${class.type.cppShortName}<#assign separator=": public"/>
 <#if class.content.superclass??>${separator} ${class.content.superclass.type.cppFullName}<#assign separator=", public"/><#t/>
 <#else><#if class.type.isThrowable>${separator} std::exception<#assign separator=", public"/></#if></#if><#t/>
-<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${separator} ${interface.cppFullName}<#assign separator=", public"/></#list><#t/>
+<#list class.content.interfaces?sort_by(["type", "cppFullName"]) as interface>${separator} ${interface.type.cppFullName}<#assign separator=", public"/></#list><#t/>
 {
 public:
 	<#-- Inner enumerations are declared inside -->
