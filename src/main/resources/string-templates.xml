@@ -10,15 +10,17 @@
 				<cppReturnType>std::string</cppReturnType>
 				<dependencies>${class.type.addIncludes("&lt;string&gt;")}</dependencies>
 				<functions>
-					<function name="java2cpp">jclass ${arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
-					jmethodID ${arg1}getBytes = Java4CppRuntime::getMethodID(javaEnv, ${arg1}stringCls, "getBytes", "()[B");
-					jbyteArray ${arg1}bytes = (jbyteArray)javaEnv->CallObjectMethod(${arg1}, ${arg1}getBytes);
-					jsize ${arg1}len = javaEnv->GetArrayLength(${arg1}bytes);
-					std::string ${arg2};
-					${arg2}.resize(${arg1}len);
-					javaEnv->GetByteArrayRegion(${arg1}bytes, 0, ${arg1}len, (jbyte*)&amp;${arg2}[0]);
-					javaEnv->DeleteLocalRef(${arg1}bytes);
-					javaEnv->DeleteLocalRef(${arg1});</function>
+					<function name="java2cpp">std::string ${arg2};
+					if( ${arg1} ) {
+						jclass ${arg1}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
+						jmethodID ${arg1}getBytes = Java4CppRuntime::getMethodID(javaEnv, ${arg1}stringCls, "getBytes", "()[B");
+						jbyteArray ${arg1}bytes = (jbyteArray)javaEnv->CallObjectMethod(${arg1}, ${arg1}getBytes);
+						jsize ${arg1}len = javaEnv->GetArrayLength(${arg1}bytes);
+						${arg2}.resize(${arg1}len);
+						javaEnv->GetByteArrayRegion(${arg1}bytes, 0, ${arg1}len, (jbyte*)&amp;${arg2}[0]);
+						javaEnv->DeleteLocalRef(${arg1}bytes);
+						javaEnv->DeleteLocalRef(${arg1});
+					}</function>
 					<function name="cpp2java">jclass ${arg2}stringCls = Java4CppRuntime::getClass(javaEnv, "java/lang/String");
 					jmethodID ${arg2}ctor = Java4CppRuntime::getMethodID(javaEnv, ${arg2}stringCls, "&lt;init&gt;", "([B)V");
 					jbyteArray ${arg2}bytes = javaEnv->NewByteArray((jsize)${arg1}.size());
