@@ -122,6 +122,7 @@ public:
 	<#-- Generate enumerations helpers -->
 	<#if class.type.isEnum>
 	static const char* getEnumString(${class.type.cppType} arg1);
+	${class.type.cppType} toEnum();
 	</#if>
 private:
 	static jclass j4c_getClass();

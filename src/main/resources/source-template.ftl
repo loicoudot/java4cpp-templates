@@ -216,5 +216,12 @@ const char* ${class.type.cppFullName}::getEnumString(${class.type.cppType} arg1)
    return map[(long)arg1];
 }
 
+${class.type.cppType} ${class.type.cppFullName}::toEnum()
+{
+	if( !_obj ) return ${class.type.cppType}::NULL_VALUE;
+	JNIEnv *javaEnv = Java4CppRuntime::attachCurrentThread();
+	static jmethodID mid = javaEnv->GetMethodID(j4c_getClass(), "ordinal", "()I");
+	return (${class.type.cppType})javaEnv->CallIntMethod(_obj, mid);
+}
 </#if>
 </#macro>
