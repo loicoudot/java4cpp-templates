@@ -12,7 +12,7 @@
 #include <string>
 #include <algorithm>
 #include <stdexcept>
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #define LoadSym GetProcAddress
 #else
@@ -155,7 +155,7 @@ void initJVM()
       return;
 
    JNIEnv* pVMEnv = NULL;
-#ifdef WIN32
+#ifdef _WIN32
    HMODULE handle = LoadLibraryA(_jrePath.c_str());
 #else
    void *handle = dlopen(_jrePath.c_str(), RTLD_NOW);
