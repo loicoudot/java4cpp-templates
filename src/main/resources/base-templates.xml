@@ -76,17 +76,22 @@
 			<cppType>${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum</cppType>
 			<dependencies>${class.type.addDependencies(class.type.javaName)}</dependencies>
 			<functions>
-				<function name="java2cpp">jclass enumcls = Java4CppRuntime::getClass(javaEnv, "${class.type.javaName?replace('.', '/')}");
-				jmethodID ordinal = Java4CppRuntime::getMethodID(javaEnv, enumcls, "ordinal", "()I");
-				${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum ${arg2} = (${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum)javaEnv->CallIntMethod(${arg1}, ordinal);
-				</function>
-				<function name="cpp2java">jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "${class.type.javaName?replace('.', '/')}");
-				jmethodID ${arg2}values = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "values", "()[${class.type.javaSignature}");
-      			jobjectArray ${arg2}array = (jobjectArray)javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}values);
-      			jobject ${arg2} = javaEnv->GetObjectArrayElement(${arg2}array, (jsize)${arg1});
-				</function>
+				<function name="java2cpp">${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum ${arg2} = ${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum::NULL_VALUE;
+				if( ${arg1} ) {
+					jclass enumcls = Java4CppRuntime::getClass(javaEnv, "${class.type.javaName?replace('.', '/')}");
+					jmethodID ordinal = Java4CppRuntime::getMethodID(javaEnv, enumcls, "ordinal", "()I");
+					${arg2} = (${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum)javaEnv->CallIntMethod(${arg1}, ordinal);
+					javaEnv->DeleteLocalRef(${arg1});
+				}</function>
+				<function name="cpp2java">jobject ${arg2} = NULL;
+				if( ${arg1} != ${class.type.cppFullName}&lt;#if !class.type.isInnerClass&gt;Enum&lt;/#if&gt;::${class.type.cppShortName}Enum::NULL_VALUE ) {
+					jclass ${arg2}cls = Java4CppRuntime::getClass(javaEnv, "${class.type.javaName?replace('.', '/')}");
+					jmethodID ${arg2}values = Java4CppRuntime::getStaticMethodID(javaEnv, ${arg2}cls, "values", "()[${class.type.javaSignature}");
+      				jobjectArray ${arg2}array = (jobjectArray)javaEnv->CallStaticObjectMethod(${arg2}cls, ${arg2}values);
+      				${arg2} = javaEnv->GetObjectArrayElement(${arg2}array, (jsize)${arg1});
+      				javaEnv->DeleteLocalRef(${arg2}array);
+				}</function>
 				<function name="cpp2javaClean">javaEnv->DeleteLocalRef(${arg1});
-				javaEnv->DeleteLocalRef(${arg1}array);
 				</function>
 			</functions>
 		</enum>
