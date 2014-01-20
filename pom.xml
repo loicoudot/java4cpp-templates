@@ -8,7 +8,7 @@
 	<groupId>com.github.loicoudot.java4cpp</groupId>
 	<artifactId>java4cpp-templates</artifactId>
 	<name>java4cpp-templates</name>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<description>Common mappings and templates for java4cpp project</description>
 	<url>https://github.com/loicoudot/java4cpp-templates</url>
 	<licenses>
